@@ -1,0 +1,8 @@
+while num < 5 do
+    a=a+b
+    a=index
+    while b<20 do
+        return 0
+    end
+    return 1
+end
