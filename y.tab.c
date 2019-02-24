@@ -69,7 +69,7 @@
 #define YYDEBUG 1
 void yyerror(char *s);
 int yylex();
-int linenum;
+int yylineno;
 
 #line 75 "y.tab.c" /* yacc.c:339  */
 
@@ -475,7 +475,7 @@ union yyalloc
 #define YYLAST   183
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  42
+#define YYNTOKENS  41
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  19
 /* YYNRULES -- Number of rules.  */
@@ -499,7 +499,7 @@ static const yytype_uint8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-      39,    40,     2,     2,    41,     2,     2,     2,     2,     2,
+      39,    40,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
@@ -551,7 +551,7 @@ static const char *const yytname[] =
   "T_comp", "T_gte", "T_lte", "T_ne", "T_ccomp", "T_scomp", "T_expas",
   "T_addas", "T_subas", "T_mulas", "T_divas", "T_modas", "T_and", "T_or",
   "T_not", "T_true", "T_false", "T_inrange", "T_exrange", "'('", "')'",
-  "','", "$accept", "line", "expression", "operatorExp", "booleanExp",
+  "$accept", "line", "expression", "operatorExp", "booleanExp",
   "assignmentExp", "relationalExp", "conditionalExp", "relDbl",
   "statement", "term", "iterStat", "whileExp", "whileExp2", "selStat",
   "whenStat", "whenExp", "whenOptional", "whenExpOpt", YY_NULLPTR
@@ -567,7 +567,7 @@ static const yytype_uint16 yytoknum[] =
      265,   266,   267,   268,   269,   270,   271,   272,   273,   274,
      275,   276,   277,   278,   279,   280,   281,   282,   283,   284,
      285,   286,   287,   288,   289,   290,   291,   292,   293,    40,
-      41,    44
+      41
 };
 # endif
 
@@ -682,26 +682,26 @@ static const yytype_int8 yycheck[] =
 static const yytype_uint8 yystos[] =
 {
        0,     3,     4,     5,    12,    14,    15,    17,    34,    39,
-      43,    44,    45,    46,    47,    48,    51,    52,    53,    56,
-      18,    26,    27,    28,    29,    30,    31,     5,    47,    51,
-      54,     5,    44,    46,    47,    48,    49,     5,    52,    44,
-      44,     0,    44,    51,     7,     8,    19,    20,    21,    22,
-      23,    24,    25,    32,    33,    50,    44,    44,    44,    44,
-      44,    44,    44,    53,    54,    55,    11,    13,    57,    10,
-      40,    44,    44,    44,    44,    44,    44,    15,    52,    11,
-      54,    49,    51,    56,    58,    11,    58,    60,    16,    57,
-      59,    58
+      42,    43,    44,    45,    46,    47,    50,    51,    52,    55,
+      18,    26,    27,    28,    29,    30,    31,     5,    46,    50,
+      53,     5,    43,    45,    46,    47,    48,     5,    51,    43,
+      43,     0,    43,    50,     7,     8,    19,    20,    21,    22,
+      23,    24,    25,    32,    33,    49,    43,    43,    43,    43,
+      43,    43,    43,    52,    53,    54,    11,    13,    56,    10,
+      40,    43,    43,    43,    43,    43,    43,    15,    51,    11,
+      53,    48,    50,    55,    57,    11,    57,    59,    16,    56,
+      58,    57
 };
 
   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_uint8 yyr1[] =
 {
-       0,    42,    43,    43,    43,    43,    44,    44,    44,    44,
-      44,    45,    45,    46,    46,    46,    47,    47,    47,    47,
-      47,    47,    47,    48,    48,    49,    49,    50,    50,    50,
-      50,    50,    50,    51,    51,    51,    51,    52,    52,    52,
-      52,    53,    53,    54,    55,    55,    55,    56,    57,    58,
-      58,    59,    59,    59,    60,    60
+       0,    41,    42,    42,    42,    42,    43,    43,    43,    43,
+      43,    44,    44,    45,    45,    45,    46,    46,    46,    46,
+      46,    46,    46,    47,    47,    48,    48,    49,    49,    49,
+      49,    49,    49,    50,    50,    50,    50,    51,    51,    51,
+      51,    52,    52,    53,    54,    54,    54,    55,    56,    57,
+      57,    58,    58,    58,    59,    59
 };
 
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
@@ -1746,22 +1746,25 @@ yyreturn:
 
 void yyerror(char *s) {
 
-    fprintf(stderr, "Error in Line %d: %s\n", linenum, s);
+    fprintf(stderr, "Error in Line %d: %s\n", yylineno, s);
 }
+
+struct table
+{
+    char key[20];
+    char value[20];
+};
 
 int main()
 {
-    char c;
+    struct table symbol_table[100];
 
     extern FILE *yyin, *yyout; 
   
     /* yyin points to the file input.txt 
     and opens  it in read mode*/
-    yyin = fopen("do_while_input.txt", "r"); 
+    yyin = fopen("while_input.txt", "r"); 
 
-    for (c = getc(yyin); c != EOF; c = getc(yyin)) 
-        if (c == '\n') // Increment count if this character is newline 
-            linenum = linenum + 1;
   
     /* yyout points to the file output.txt 
     and opens it in write mode*/

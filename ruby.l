@@ -4,9 +4,10 @@
 #include "y.tab.h"
 int yylex();
 %}
+
 %option yylineno
 
-RESERVED "BEGIN"|"do"|"next"|"then"|"END"|"nil"|"true"|"not"|"and"|"end"|"or"|"false"|"unless"|"begin"|"until"|"break"|"when"|"case"|"return"|"while"
+RESERVED 	"BEGIN"|"do"|"next"|"then"|"END"|"nil"|"true"|"not"|"and"|"end"|"or"|"false"|"unless"|"begin"|"until"|"break"|"when"|"case"|"return"|"while"
 
 ALPHABET 	[a-zA-Z]
 VALID 		[_a-zA-Z]
@@ -57,6 +58,7 @@ P_AS_OP 		({VAR}\,)*{VAR}=
 	*/
 
 %%
+\n 			{ }
 	/*keywords*/
 "puts" 		{return T_puts;}
 "do" 		{return T_do;}

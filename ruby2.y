@@ -4,7 +4,7 @@
 #define YYDEBUG 1
 void yyerror(char *s);
 int yylex();
-int linenum;
+int yylineno;
 %}
 
 
@@ -159,18 +159,18 @@ whenExpOpt  : whenExp
 
 // Values
 
-Val         : Val ',' Val 
-            | T_int 
-            | T_flt
-            | T_string
-            | T_inrange
-            | T_exrange
-            | conditionalExp
+// Val         : Val ',' Val 
+//             | T_int 
+//             | T_flt
+//             | T_string
+//             | T_inrange
+//             | T_exrange
+//             | conditionalExp
 %%
 
 void yyerror(char *s) {
 
-    fprintf(stderr, "Error in Line %d: %s\n", linenum, s);
+    fprintf(stderr, "Error in Line %d: %s\n", yylineno, s);
 }
 
 struct table
@@ -187,12 +187,8 @@ int main()
   
     /* yyin points to the file input.txt 
     and opens  it in read mode*/
-    yyin = fopen("do_while_input.txt", "r"); 
+    yyin = fopen("while_input.txt", "r"); 
 
-    char c;
-    for (c = getc(yyin); c != EOF; c = getc(yyin)) 
-        if (c == '\n') // Increment count if this character is newline 
-            linenum = linenum + 1;
   
     /* yyout points to the file output.txt 
     and opens it in write mode*/
