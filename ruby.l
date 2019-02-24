@@ -3,8 +3,8 @@
 #include<string.h>
 #include "y.tab.h"
 int yylex();
-void yyerror(char *s);
 %}
+%option yylineno
 
 RESERVED "BEGIN"|"do"|"next"|"then"|"END"|"nil"|"true"|"not"|"and"|"end"|"or"|"false"|"unless"|"begin"|"until"|"break"|"when"|"case"|"return"|"while"
 

@@ -4,8 +4,9 @@
 #define YYDEBUG 1
 void yyerror(char *s);
 int yylex();
-int lineno=0;
+int linenum;
 %}
+
 
 %locations 
 
@@ -167,13 +168,31 @@ Val         : Val ',' Val
             | conditionalExp
 %%
 
+void yyerror(char *s) {
+
+    fprintf(stderr, "Error in Line %d: %s\n", linenum, s);
+}
+
+struct table
+{
+    char key[20];
+    char value[20];
+};
+
 int main()
 {
+    struct table symbol_table[100];
+
     extern FILE *yyin, *yyout; 
   
     /* yyin points to the file input.txt 
     and opens  it in read mode*/
     yyin = fopen("do_while_input.txt", "r"); 
+
+    char c;
+    for (c = getc(yyin); c != EOF; c = getc(yyin)) 
+        if (c == '\n') // Increment count if this character is newline 
+            linenum = linenum + 1;
   
     /* yyout points to the file output.txt 
     and opens it in write mode*/
