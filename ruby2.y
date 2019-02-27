@@ -38,6 +38,7 @@ int yylineno;
 		T_while 	
 		T_else 		
 		T_return
+        T_def
 
 %token  T_asop
         T_exp
@@ -114,6 +115,7 @@ statement   : T_return term
             | iterStat
             | selStat
             | assignmentExp
+            | function
             ;
 
 term    : T_int
@@ -157,6 +159,10 @@ whenExpOpt  : whenExp
             | 
             ;
 
+// function
+
+function    : T_def T_id 
+
 // Values
 
 // Val         : Val ',' Val 
@@ -171,6 +177,11 @@ whenExpOpt  : whenExp
 void yyerror(char *s) {
 
     fprintf(stderr, "Error in Line %d: %s\n", yylineno, s);
+}
+
+void insert(char *type, int val)
+{
+    
 }
 
 struct table

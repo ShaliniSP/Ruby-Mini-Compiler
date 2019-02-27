@@ -1749,6 +1749,11 @@ void yyerror(char *s) {
     fprintf(stderr, "Error in Line %d: %s\n", yylineno, s);
 }
 
+void insert(char *type, int val)
+{
+    
+}
+
 struct table
 {
     char key[20];

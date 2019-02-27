@@ -7,7 +7,7 @@ int yylex();
 
 %option yylineno
 
-RESERVED 	"BEGIN"|"do"|"next"|"then"|"END"|"nil"|"true"|"not"|"and"|"end"|"or"|"false"|"unless"|"begin"|"until"|"break"|"when"|"case"|"return"|"while"
+RESERVED 	"BEGIN"|"do"|"next"|"then"|"END"|"nil"|"true"|"not"|"and"|"end"|"or"|"false"|"unless"|"begin"|"until"|"break"|"when"|"case"|"return"|"while"|"def"
 
 ALPHABET 	[a-zA-Z]
 VALID 		[_a-zA-Z]
@@ -69,6 +69,7 @@ P_AS_OP 		({VAR}\,)*{VAR}=
 "while" 	{return T_while;}
 "else"		{return T_else;}
 "return"	{return T_return;}
+"def"		{return T_def;}
 	/*operators*/
 "="				{return T_asop;}
 "**"			{return T_exp;}
