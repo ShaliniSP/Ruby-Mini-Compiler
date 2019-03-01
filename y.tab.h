@@ -60,27 +60,28 @@ extern int yydebug;
     T_while = 270,
     T_else = 271,
     T_return = 272,
-    T_asop = 273,
-    T_exp = 274,
-    T_comp = 275,
-    T_gte = 276,
-    T_lte = 277,
-    T_ne = 278,
-    T_ccomp = 279,
-    T_scomp = 280,
-    T_expas = 281,
-    T_addas = 282,
-    T_subas = 283,
-    T_mulas = 284,
-    T_divas = 285,
-    T_modas = 286,
-    T_and = 287,
-    T_or = 288,
-    T_not = 289,
-    T_true = 290,
-    T_false = 291,
-    T_inrange = 292,
-    T_exrange = 293
+    T_def = 273,
+    T_asop = 274,
+    T_exp = 275,
+    T_comp = 276,
+    T_gte = 277,
+    T_lte = 278,
+    T_ne = 279,
+    T_ccomp = 280,
+    T_scomp = 281,
+    T_expas = 282,
+    T_addas = 283,
+    T_subas = 284,
+    T_mulas = 285,
+    T_divas = 286,
+    T_modas = 287,
+    T_and = 288,
+    T_or = 289,
+    T_not = 290,
+    T_true = 291,
+    T_false = 292,
+    T_inrange = 293,
+    T_exrange = 294
   };
 #endif
 /* Tokens.  */
@@ -99,44 +100,46 @@ extern int yydebug;
 #define T_while 270
 #define T_else 271
 #define T_return 272
-#define T_asop 273
-#define T_exp 274
-#define T_comp 275
-#define T_gte 276
-#define T_lte 277
-#define T_ne 278
-#define T_ccomp 279
-#define T_scomp 280
-#define T_expas 281
-#define T_addas 282
-#define T_subas 283
-#define T_mulas 284
-#define T_divas 285
-#define T_modas 286
-#define T_and 287
-#define T_or 288
-#define T_not 289
-#define T_true 290
-#define T_false 291
-#define T_inrange 292
-#define T_exrange 293
+#define T_def 273
+#define T_asop 274
+#define T_exp 275
+#define T_comp 276
+#define T_gte 277
+#define T_lte 278
+#define T_ne 279
+#define T_ccomp 280
+#define T_scomp 281
+#define T_expas 282
+#define T_addas 283
+#define T_subas 284
+#define T_mulas 285
+#define T_divas 286
+#define T_modas 287
+#define T_and 288
+#define T_or 289
+#define T_not 290
+#define T_true 291
+#define T_false 292
+#define T_inrange 293
+#define T_exrange 294
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 
 union YYSTYPE
 {
-#line 14 "ruby2.y" /* yacc.c:1909  */
+#line 15 "ruby2.y" /* yacc.c:1909  */
 
     int intval;
-    char *id,*str;
+    char *str;
     float floatval;
     int boo;
     int arithop;
     int relop;
     int asop;
+    st_rec* symbol_table[100];  //Chained hash
 
-#line 140 "y.tab.h" /* yacc.c:1909  */
+#line 143 "y.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

@@ -1,24 +1,26 @@
 %{
 #include<stdio.h>
 #include<stdlib.h>
+#include<string.h>
+#include"symboltable.h"
 #define YYDEBUG 1
 void yyerror(char *s);
 int yylex();
 int yylineno;
 %}
 
-
 %locations 
 
 %union
 {
     int intval;
-    char *id,*str;
+    char *str;
     float floatval;
     int boo;
     int arithop;
     int relop;
     int asop;
+    st_rec* symbol_table[100];  //Chained hash
 }
 
 %start line
@@ -179,21 +181,16 @@ void yyerror(char *s) {
     fprintf(stderr, "Error in Line %d: %s\n", yylineno, s);
 }
 
-void insert(char *type, int val)
+    /*void insert(char *type, int val)
 {
     
-}
+}*/
 
-struct table
-{
-    char key[20];
-    char value[20];
-};
+
 
 int main()
 {
-    struct table symbol_table[100];
-
+    init_table();
     extern FILE *yyin, *yyout; 
   
     /* yyin points to the file input.txt 

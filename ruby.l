@@ -1,7 +1,8 @@
 %{
 #include <stdio.h>
-#include<string.h>
+#include <string.h>
 #include "y.tab.h"
+#include"symboltable.h"
 int yylex();
 %}
 
@@ -58,9 +59,11 @@ P_AS_OP 		({VAR}\,)*{VAR}=
 	*/
 
 %%
+	/*FOR ALL THE RULES THAT UPDATE SYMBOL TABLE WE NEED TO LOOKUP AND PUSH
+	  HAVE TO PASS LINE NO AS HASH*/
 \n 			{ }
 	/*keywords*/
-"puts" 		{return T_puts;}
+"puts" 		{return T_puts; /*yylval.symboltable[lineno] = getsym(T_puts, lineno);*/}
 "do" 		{return T_do;}
 "end" 		{return T_end;}
 "begin" 	{return T_begin;}
@@ -95,7 +98,7 @@ P_AS_OP 		({VAR}\,)*{VAR}=
 {SPACES}		{}	
 {ARITH_OP} 		{yylval.arithop = atoi(yytext);return T_ARITH_OP;}
 {REL_OP_SING}	{yylval.relop = atoi(yytext);return T_REL_OP_SING;}
-{VAR}			{yylval.id = yytext;return T_id;}
+{VAR}			{strncpy(yylval.id, yytext, 31);return T_id;}
 {INT}			{yylval.intval = atoi(yytext);return T_int;}
 {FLOAT}			{yylval.floatval = atof(yytext);return T_flt;}
 {STRING}		{yylval.str = strdup(yytext);return T_string;}
