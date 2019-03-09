@@ -58,6 +58,9 @@ P_AS_OP 		({VAR}\,)*{VAR}=
 	*/
 
 %%
+
+\#(.)*		{ }
+\n\="begin"\n(.*\n)*.*\n\="end"\n { }
 \n 			{ }
 	/*keywords*/
 "puts" 		{return T_puts;}
@@ -70,6 +73,7 @@ P_AS_OP 		({VAR}\,)*{VAR}=
 "else"		{return T_else;}
 "return"	{return T_return;}
 "def"		{return T_def;}
+
 	/*operators*/
 "="				{return T_asop;}
 "**"			{return T_exp;}
@@ -115,4 +119,14 @@ P_AS_OP 		({VAR}\,)*{VAR}=
 int yywrap(void){
 	return 1;
 }
+
+// int main(int argc, char const *argv[])
+// {
+// 	extern FILE *yyin, *yyout; 
+// 	yyin = fopen("test.rb","r");
+// 	yyout = fopen("out.rb","w");
+// 	yylex();
+	
+// 	return 0;
+// }
 

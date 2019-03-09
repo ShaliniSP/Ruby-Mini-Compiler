@@ -116,6 +116,7 @@ statement   : T_return term
             | selStat
             | assignmentExp
             | function
+            | statement
             ;
 
 term    : T_int
@@ -161,7 +162,10 @@ whenExpOpt  : whenExp
 
 // function
 
-function    : T_def T_id 
+function    : T_def T_id inFunction T_end;
+
+inFunction  : statement
+
 
 // Values
 
@@ -198,7 +202,7 @@ int main()
   
     /* yyin points to the file input.txt 
     and opens  it in read mode*/
-    yyin = fopen("while_input.txt", "r"); 
+    yyin = fopen("case_input.txt", "r"); 
 
   
     /* yyout points to the file output.txt 
@@ -208,5 +212,6 @@ int main()
         /*#if YYDEBUG
         yydebug = 1;
     #endif*/
+    yylex();
     yyparse();
 }
