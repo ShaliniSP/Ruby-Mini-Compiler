@@ -1,8 +1,14 @@
+$d = 7
+class test
+    @@new = 10
+    return 1
+end
+
 while num < 5 do
-    a=a+b
-    a=index
-    while b<20 do
-        return 0
+    while x < 4 do
+        y = "Hello"
+        b = 5 
     end
+    a = [ 3 , 4 , 5 ]
     return 1
 end

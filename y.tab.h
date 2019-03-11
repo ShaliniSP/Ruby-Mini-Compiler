@@ -61,27 +61,35 @@ extern int yydebug;
     T_else = 271,
     T_return = 272,
     T_def = 273,
-    T_asop = 274,
-    T_exp = 275,
-    T_comp = 276,
-    T_gte = 277,
-    T_lte = 278,
-    T_ne = 279,
-    T_ccomp = 280,
-    T_scomp = 281,
-    T_expas = 282,
-    T_addas = 283,
-    T_subas = 284,
-    T_mulas = 285,
-    T_divas = 286,
-    T_modas = 287,
-    T_and = 288,
-    T_or = 289,
-    T_not = 290,
-    T_true = 291,
-    T_false = 292,
-    T_inrange = 293,
-    T_exrange = 294
+    T_class = 274,
+    T_openpar = 275,
+    T_closepar = 276,
+    T_opencurly = 277,
+    T_closecurly = 278,
+    T_openbox = 279,
+    T_closebox = 280,
+    T_asop = 281,
+    T_exp = 282,
+    T_comp = 283,
+    T_gte = 284,
+    T_lte = 285,
+    T_ne = 286,
+    T_ccomp = 287,
+    T_scomp = 288,
+    T_expas = 289,
+    T_addas = 290,
+    T_subas = 291,
+    T_mulas = 292,
+    T_divas = 293,
+    T_modas = 294,
+    T_and = 295,
+    T_or = 296,
+    T_not = 297,
+    T_comma = 298,
+    T_true = 299,
+    T_false = 300,
+    T_inrange = 301,
+    T_exrange = 302
   };
 #endif
 /* Tokens.  */
@@ -101,44 +109,68 @@ extern int yydebug;
 #define T_else 271
 #define T_return 272
 #define T_def 273
-#define T_asop 274
-#define T_exp 275
-#define T_comp 276
-#define T_gte 277
-#define T_lte 278
-#define T_ne 279
-#define T_ccomp 280
-#define T_scomp 281
-#define T_expas 282
-#define T_addas 283
-#define T_subas 284
-#define T_mulas 285
-#define T_divas 286
-#define T_modas 287
-#define T_and 288
-#define T_or 289
-#define T_not 290
-#define T_true 291
-#define T_false 292
-#define T_inrange 293
-#define T_exrange 294
+#define T_class 274
+#define T_openpar 275
+#define T_closepar 276
+#define T_opencurly 277
+#define T_closecurly 278
+#define T_openbox 279
+#define T_closebox 280
+#define T_asop 281
+#define T_exp 282
+#define T_comp 283
+#define T_gte 284
+#define T_lte 285
+#define T_ne 286
+#define T_ccomp 287
+#define T_scomp 288
+#define T_expas 289
+#define T_addas 290
+#define T_subas 291
+#define T_mulas 292
+#define T_divas 293
+#define T_modas 294
+#define T_and 295
+#define T_or 296
+#define T_not 297
+#define T_comma 298
+#define T_true 299
+#define T_false 300
+#define T_inrange 301
+#define T_exrange 302
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 
 union YYSTYPE
 {
-#line 14 "ruby2.y" /* yacc.c:1909  */
+#line 17 "ruby2.y" /* yacc.c:1909  */
 
+    char *id;
+    char* array;
     int intval;
-    char *id,*str;
+    char *str;
     float floatval;
     int boo;
     int arithop;
     int relop;
     int asop;
+    struct table{
+        char *tok_name;
+        char *tok_val;
+        char *scope;
+        int line_no;
+        int int_val;
+        float float_val;
+        int bool_val;
+        char* str;
+        char* array;
+        int occurences;
+    }table;
 
-#line 142 "y.tab.h" /* yacc.c:1909  */
+    struct table tab_arr[20];
+
+#line 174 "y.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;
