@@ -4,6 +4,8 @@ Terminals unused in grammar
    T_opencurly
    T_closecurly
    T_exp
+   T_expas
+   T_modas
    T_true
    T_false
    T_inrange
@@ -52,66 +54,64 @@ Grammar
    28 assignmentExp: T_id T_asop conditionalExp
    29              | T_id T_asop arrayExp
    30              | T_id T_asop T_string
-   31              | T_id T_addas expression
-   32              | T_id T_subas expression
-   33              | T_id T_mulas expression
-   34              | T_id T_divas expression
-   35              | T_id T_modas expression
-   36              | T_id T_expas expression
+   31              | T_id T_addas term
+   32              | T_id T_subas term
+   33              | T_id T_mulas term
+   34              | T_id T_divas term
 
-   37 conditionalExp: relationalExp
-   38               | conditionalExp T_and conditionalExp
-   39               | conditionalExp T_or conditionalExp
-   40               | T_not conditionalExp
+   35 conditionalExp: relationalExp
+   36               | conditionalExp T_and conditionalExp
+   37               | conditionalExp T_or conditionalExp
+   38               | T_not conditionalExp
 
-   41 statement: T_return term
-   42          | iterStat
-   43          | selStat
-   44          | assignmentExp
-   45          | functionStat
-   46          | classStat
+   39 statement: T_return term
+   40          | iterStat
+   41          | selStat
+   42          | assignmentExp
+   43          | functionStat
+   44          | classStat
 
-   47 term: term1
-   48     | term2
+   45 term: term1
+   46     | term2
 
-   49 term1: T_int
-   50      | T_openpar operatorExp T_closepar
-   51      | T_flt
+   47 term1: T_int
+   48      | T_openpar operatorExp T_closepar
+   49      | T_flt
 
-   52 term2: T_id
+   50 term2: T_id
 
-   53 iterStat: T_while conditionalExp T_do whileExp T_end
-   54         | T_begin whileExp T_end T_while conditionalExp
+   51 iterStat: T_while conditionalExp T_do whileExp T_end
+   52         | T_begin whileExp T_end T_while conditionalExp
 
-   55 whileExp: statement whileExp
-   56         | %empty
+   53 whileExp: statement whileExp
+   54         | %empty
 
-   57 selStat: T_case T_id whenStat T_end
+   55 selStat: T_case T_id whenStat T_end
 
-   58 whenStat: T_when term whenExp whenOptional
+   56 whenStat: T_when term whenExp whenOptional
 
-   59 whenExp: statement whenExpOpt
+   57 whenExp: statement whenExpOpt
 
-   60 whenOptional: T_else whenExp
-   61             | whenStat
-   62             | %empty
+   58 whenOptional: T_else whenExp
+   59             | whenStat
+   60             | %empty
 
-   63 whenExpOpt: whenExp
-   64           | %empty
+   61 whenExpOpt: whenExp
+   62           | %empty
 
-   65 functionStat: T_def T_id T_openpar T_id T_closepar funcExp T_end
+   63 functionStat: T_def T_id T_openpar T_id T_closepar funcExp T_end
 
-   66 funcExp: statement funcExp2
+   64 funcExp: statement funcExp2
 
-   67 funcExp2: funcExp
-   68         | %empty
+   65 funcExp2: funcExp
+   66         | %empty
 
-   69 classStat: T_class T_id classExp T_end
+   67 classStat: T_class T_id classExp T_end
 
-   70 classExp: statement classExp2
+   68 classExp: statement classExp2
 
-   71 classExp2: classExp
-   72          | %empty
+   69 classExp2: classExp
+   70          | %empty
 
 
 Terminals, with rules where they appear
@@ -119,28 +119,28 @@ Terminals, with rules where they appear
 $end (0) 0
 '\n' (10) 5
 error (256) 5
-T_int (258) 24 25 49
-T_flt (259) 26 27 51
-T_id (260) 28 29 30 31 32 33 34 35 36 52 57 65 69
+T_int (258) 24 25 47
+T_flt (259) 26 27 49
+T_id (260) 28 29 30 31 32 33 34 50 55 63 67
 T_string (261) 30
 T_puts (262)
-T_do (263) 53
-T_end (264) 53 54 57 65 69
-T_begin (265) 54
-T_when (266) 58
-T_case (267) 57
-T_while (268) 53 54
-T_else (269) 60
-T_return (270) 41
-T_def (271) 65
-T_class (272) 69
+T_do (263) 51
+T_end (264) 51 52 55 63 67
+T_begin (265) 52
+T_when (266) 56
+T_case (267) 55
+T_while (268) 51 52
+T_else (269) 58
+T_return (270) 39
+T_def (271) 63
+T_class (272) 67
 T_plus (273) 9
 T_minus (274) 10
 T_mul (275) 7
 T_div (276) 8
 T_mod (277) 11
-T_openpar (278) 50 65
-T_closepar (279) 50 65
+T_openpar (278) 48 63
+T_closepar (279) 48 63
 T_opencurly (280)
 T_closecurly (281)
 T_openbox (282) 21
@@ -154,15 +154,15 @@ T_gte (289) 17
 T_lte (290) 16
 T_ne (291) 19
 T_ccomp (292) 12
-T_expas (293) 36
+T_expas (293)
 T_addas (294) 31
 T_subas (295) 32
 T_mulas (296) 33
 T_divas (297) 34
-T_modas (298) 35
-T_and (299) 38
-T_or (300) 39
-T_not (301) 40
+T_modas (298)
+T_and (299) 36
+T_or (300) 37
+T_not (301) 38
 T_comma (302) 24 26
 T_true (303)
 T_false (304)
@@ -177,11 +177,11 @@ $accept (53)
 line (54)
     on left: 1 2 3 4 5, on right: 0 2 4
 expression (55)
-    on left: 6, on right: 1 2 31 32 33 34 35 36
+    on left: 6, on right: 1 2
 operatorExp (56)
-    on left: 7 8 9 10 11 12 13, on right: 7 8 9 10 11 12 20 50
+    on left: 7 8 9 10 11 12 13, on right: 7 8 9 10 11 12 20 48
 relationalExp (57)
-    on left: 14 15 16 17 18 19 20, on right: 14 15 16 17 18 19 37
+    on left: 14 15 16 17 18 19 20, on right: 14 15 16 17 18 19 35
 arrayExp (58)
     on left: 21, on right: 29
 numList (59)
@@ -191,43 +191,43 @@ intList (60)
 fltList (61)
     on left: 26 27, on right: 23 26
 assignmentExp (62)
-    on left: 28 29 30 31 32 33 34 35 36, on right: 44
+    on left: 28 29 30 31 32 33 34, on right: 42
 conditionalExp (63)
-    on left: 37 38 39 40, on right: 6 28 38 39 40 53 54
+    on left: 35 36 37 38, on right: 6 28 36 37 38 51 52
 statement (64)
-    on left: 41 42 43 44 45 46, on right: 3 4 55 59 66 70
+    on left: 39 40 41 42 43 44, on right: 3 4 53 57 64 68
 term (65)
-    on left: 47 48, on right: 13 41 58
+    on left: 45 46, on right: 13 31 32 33 34 39 56
 term1 (66)
-    on left: 49 50 51, on right: 47
+    on left: 47 48 49, on right: 45
 term2 (67)
-    on left: 52, on right: 48
+    on left: 50, on right: 46
 iterStat (68)
-    on left: 53 54, on right: 42
+    on left: 51 52, on right: 40
 whileExp (69)
-    on left: 55 56, on right: 53 54 55
+    on left: 53 54, on right: 51 52 53
 selStat (70)
-    on left: 57, on right: 43
+    on left: 55, on right: 41
 whenStat (71)
-    on left: 58, on right: 57 61
+    on left: 56, on right: 55 59
 whenExp (72)
-    on left: 59, on right: 58 60 63
+    on left: 57, on right: 56 58 61
 whenOptional (73)
-    on left: 60 61 62, on right: 58
+    on left: 58 59 60, on right: 56
 whenExpOpt (74)
-    on left: 63 64, on right: 59
+    on left: 61 62, on right: 57
 functionStat (75)
-    on left: 65, on right: 45
+    on left: 63, on right: 43
 funcExp (76)
-    on left: 66, on right: 65 67
+    on left: 64, on right: 63 65
 funcExp2 (77)
-    on left: 67 68, on right: 66
+    on left: 65 66, on right: 64
 classStat (78)
-    on left: 69, on right: 46
+    on left: 67, on right: 44
 classExp (79)
-    on left: 70, on right: 69 71
+    on left: 68, on right: 67 69
 classExp2 (80)
-    on left: 71 72, on right: 70
+    on left: 69 70, on right: 68
 
 
 State 0
@@ -272,16 +272,16 @@ State 1
 
 State 2
 
-   49 term1: T_int .
+   47 term1: T_int .
 
-    $default  reduce using rule 49 (term1)
+    $default  reduce using rule 47 (term1)
 
 
 State 3
 
-   51 term1: T_flt .
+   49 term1: T_flt .
 
-    $default  reduce using rule 51 (term1)
+    $default  reduce using rule 49 (term1)
 
 
 State 4
@@ -289,30 +289,26 @@ State 4
    28 assignmentExp: T_id . T_asop conditionalExp
    29              | T_id . T_asop arrayExp
    30              | T_id . T_asop T_string
-   31              | T_id . T_addas expression
-   32              | T_id . T_subas expression
-   33              | T_id . T_mulas expression
-   34              | T_id . T_divas expression
-   35              | T_id . T_modas expression
-   36              | T_id . T_expas expression
-   52 term2: T_id .
+   31              | T_id . T_addas term
+   32              | T_id . T_subas term
+   33              | T_id . T_mulas term
+   34              | T_id . T_divas term
+   50 term2: T_id .
 
     T_asop   shift, and go to state 28
-    T_expas  shift, and go to state 29
-    T_addas  shift, and go to state 30
-    T_subas  shift, and go to state 31
-    T_mulas  shift, and go to state 32
-    T_divas  shift, and go to state 33
-    T_modas  shift, and go to state 34
+    T_addas  shift, and go to state 29
+    T_subas  shift, and go to state 30
+    T_mulas  shift, and go to state 31
+    T_divas  shift, and go to state 32
 
-    $default  reduce using rule 52 (term2)
+    $default  reduce using rule 50 (term2)
 
 
 State 5
 
-   54 iterStat: T_begin . whileExp T_end T_while conditionalExp
+   52 iterStat: T_begin . whileExp T_end T_while conditionalExp
 
-    T_id      shift, and go to state 35
+    T_id      shift, and go to state 33
     T_begin   shift, and go to state 5
     T_case    shift, and go to state 6
     T_while   shift, and go to state 7
@@ -320,12 +316,12 @@ State 5
     T_def     shift, and go to state 9
     T_class   shift, and go to state 10
 
-    $default  reduce using rule 56 (whileExp)
+    $default  reduce using rule 54 (whileExp)
 
     assignmentExp  go to state 17
-    statement      go to state 36
+    statement      go to state 34
     iterStat       go to state 23
-    whileExp       go to state 37
+    whileExp       go to state 35
     selStat        go to state 24
     functionStat   go to state 25
     classStat      go to state 26
@@ -333,24 +329,24 @@ State 5
 
 State 6
 
-   57 selStat: T_case . T_id whenStat T_end
+   55 selStat: T_case . T_id whenStat T_end
 
-    T_id  shift, and go to state 38
+    T_id  shift, and go to state 36
 
 
 State 7
 
-   53 iterStat: T_while . conditionalExp T_do whileExp T_end
+   51 iterStat: T_while . conditionalExp T_do whileExp T_end
 
     T_int      shift, and go to state 2
     T_flt      shift, and go to state 3
-    T_id       shift, and go to state 39
+    T_id       shift, and go to state 37
     T_openpar  shift, and go to state 11
     T_not      shift, and go to state 12
 
     operatorExp     go to state 15
     relationalExp   go to state 16
-    conditionalExp  go to state 40
+    conditionalExp  go to state 38
     term            go to state 20
     term1           go to state 21
     term2           go to state 22
@@ -358,42 +354,42 @@ State 7
 
 State 8
 
-   41 statement: T_return . term
+   39 statement: T_return . term
 
     T_int      shift, and go to state 2
     T_flt      shift, and go to state 3
-    T_id       shift, and go to state 39
+    T_id       shift, and go to state 37
     T_openpar  shift, and go to state 11
 
-    term   go to state 41
+    term   go to state 39
     term1  go to state 21
     term2  go to state 22
 
 
 State 9
 
-   65 functionStat: T_def . T_id T_openpar T_id T_closepar funcExp T_end
+   63 functionStat: T_def . T_id T_openpar T_id T_closepar funcExp T_end
 
-    T_id  shift, and go to state 42
+    T_id  shift, and go to state 40
 
 
 State 10
 
-   69 classStat: T_class . T_id classExp T_end
+   67 classStat: T_class . T_id classExp T_end
 
-    T_id  shift, and go to state 43
+    T_id  shift, and go to state 41
 
 
 State 11
 
-   50 term1: T_openpar . operatorExp T_closepar
+   48 term1: T_openpar . operatorExp T_closepar
 
     T_int      shift, and go to state 2
     T_flt      shift, and go to state 3
-    T_id       shift, and go to state 39
+    T_id       shift, and go to state 37
     T_openpar  shift, and go to state 11
 
-    operatorExp  go to state 44
+    operatorExp  go to state 42
     term         go to state 20
     term1        go to state 21
     term2        go to state 22
@@ -401,17 +397,17 @@ State 11
 
 State 12
 
-   40 conditionalExp: T_not . conditionalExp
+   38 conditionalExp: T_not . conditionalExp
 
     T_int      shift, and go to state 2
     T_flt      shift, and go to state 3
-    T_id       shift, and go to state 39
+    T_id       shift, and go to state 37
     T_openpar  shift, and go to state 11
     T_not      shift, and go to state 12
 
     operatorExp     go to state 15
     relationalExp   go to state 16
-    conditionalExp  go to state 45
+    conditionalExp  go to state 43
     term            go to state 20
     term1           go to state 21
     term2           go to state 22
@@ -423,7 +419,7 @@ State 13
     2 line: line . expression
     4     | line . statement
 
-    $end       shift, and go to state 46
+    $end       shift, and go to state 44
     T_int      shift, and go to state 2
     T_flt      shift, and go to state 3
     T_id       shift, and go to state 4
@@ -436,12 +432,12 @@ State 13
     T_openpar  shift, and go to state 11
     T_not      shift, and go to state 12
 
-    expression      go to state 47
+    expression      go to state 45
     operatorExp     go to state 15
     relationalExp   go to state 16
     assignmentExp   go to state 17
     conditionalExp  go to state 18
-    statement       go to state 48
+    statement       go to state 46
     term            go to state 20
     term1           go to state 21
     term2           go to state 22
@@ -468,12 +464,12 @@ State 15
    12            | operatorExp . T_ccomp operatorExp
    20 relationalExp: operatorExp .
 
-    T_plus   shift, and go to state 49
-    T_minus  shift, and go to state 50
-    T_mul    shift, and go to state 51
-    T_div    shift, and go to state 52
-    T_mod    shift, and go to state 53
-    T_ccomp  shift, and go to state 54
+    T_plus   shift, and go to state 47
+    T_minus  shift, and go to state 48
+    T_mul    shift, and go to state 49
+    T_div    shift, and go to state 50
+    T_mod    shift, and go to state 51
+    T_ccomp  shift, and go to state 52
 
     $default  reduce using rule 20 (relationalExp)
 
@@ -486,33 +482,33 @@ State 16
    17              | relationalExp . T_gte relationalExp
    18              | relationalExp . T_comp relationalExp
    19              | relationalExp . T_ne relationalExp
-   37 conditionalExp: relationalExp .
+   35 conditionalExp: relationalExp .
 
-    T_comp  shift, and go to state 55
-    T_gt    shift, and go to state 56
-    T_lt    shift, and go to state 57
-    T_gte   shift, and go to state 58
-    T_lte   shift, and go to state 59
-    T_ne    shift, and go to state 60
+    T_comp  shift, and go to state 53
+    T_gt    shift, and go to state 54
+    T_lt    shift, and go to state 55
+    T_gte   shift, and go to state 56
+    T_lte   shift, and go to state 57
+    T_ne    shift, and go to state 58
 
-    $default  reduce using rule 37 (conditionalExp)
+    $default  reduce using rule 35 (conditionalExp)
 
 
 State 17
 
-   44 statement: assignmentExp .
+   42 statement: assignmentExp .
 
-    $default  reduce using rule 44 (statement)
+    $default  reduce using rule 42 (statement)
 
 
 State 18
 
     6 expression: conditionalExp .
-   38 conditionalExp: conditionalExp . T_and conditionalExp
-   39               | conditionalExp . T_or conditionalExp
+   36 conditionalExp: conditionalExp . T_and conditionalExp
+   37               | conditionalExp . T_or conditionalExp
 
-    T_and  shift, and go to state 61
-    T_or   shift, and go to state 62
+    T_and  shift, and go to state 59
+    T_or   shift, and go to state 60
 
     $default  reduce using rule 6 (expression)
 
@@ -533,44 +529,44 @@ State 20
 
 State 21
 
-   47 term: term1 .
+   45 term: term1 .
 
-    $default  reduce using rule 47 (term)
+    $default  reduce using rule 45 (term)
 
 
 State 22
 
-   48 term: term2 .
+   46 term: term2 .
 
-    $default  reduce using rule 48 (term)
+    $default  reduce using rule 46 (term)
 
 
 State 23
 
-   42 statement: iterStat .
+   40 statement: iterStat .
 
-    $default  reduce using rule 42 (statement)
+    $default  reduce using rule 40 (statement)
 
 
 State 24
 
-   43 statement: selStat .
+   41 statement: selStat .
 
-    $default  reduce using rule 43 (statement)
+    $default  reduce using rule 41 (statement)
 
 
 State 25
 
-   45 statement: functionStat .
+   43 statement: functionStat .
 
-    $default  reduce using rule 45 (statement)
+    $default  reduce using rule 43 (statement)
 
 
 State 26
 
-   46 statement: classStat .
+   44 statement: classStat .
 
-    $default  reduce using rule 46 (statement)
+    $default  reduce using rule 44 (statement)
 
 
 State 27
@@ -588,16 +584,16 @@ State 28
 
     T_int      shift, and go to state 2
     T_flt      shift, and go to state 3
-    T_id       shift, and go to state 39
-    T_string   shift, and go to state 63
+    T_id       shift, and go to state 37
+    T_string   shift, and go to state 61
     T_openpar  shift, and go to state 11
-    T_openbox  shift, and go to state 64
+    T_openbox  shift, and go to state 62
     T_not      shift, and go to state 12
 
     operatorExp     go to state 15
     relationalExp   go to state 16
-    arrayExp        go to state 65
-    conditionalExp  go to state 66
+    arrayExp        go to state 63
+    conditionalExp  go to state 64
     term            go to state 20
     term1           go to state 21
     term2           go to state 22
@@ -605,215 +601,153 @@ State 28
 
 State 29
 
-   36 assignmentExp: T_id T_expas . expression
+   31 assignmentExp: T_id T_addas . term
 
     T_int      shift, and go to state 2
     T_flt      shift, and go to state 3
-    T_id       shift, and go to state 39
+    T_id       shift, and go to state 37
     T_openpar  shift, and go to state 11
-    T_not      shift, and go to state 12
 
-    expression      go to state 67
-    operatorExp     go to state 15
-    relationalExp   go to state 16
-    conditionalExp  go to state 18
-    term            go to state 20
-    term1           go to state 21
-    term2           go to state 22
+    term   go to state 65
+    term1  go to state 21
+    term2  go to state 22
 
 
 State 30
 
-   31 assignmentExp: T_id T_addas . expression
+   32 assignmentExp: T_id T_subas . term
 
     T_int      shift, and go to state 2
     T_flt      shift, and go to state 3
-    T_id       shift, and go to state 39
+    T_id       shift, and go to state 37
     T_openpar  shift, and go to state 11
-    T_not      shift, and go to state 12
 
-    expression      go to state 68
-    operatorExp     go to state 15
-    relationalExp   go to state 16
-    conditionalExp  go to state 18
-    term            go to state 20
-    term1           go to state 21
-    term2           go to state 22
+    term   go to state 66
+    term1  go to state 21
+    term2  go to state 22
 
 
 State 31
 
-   32 assignmentExp: T_id T_subas . expression
+   33 assignmentExp: T_id T_mulas . term
 
     T_int      shift, and go to state 2
     T_flt      shift, and go to state 3
-    T_id       shift, and go to state 39
+    T_id       shift, and go to state 37
     T_openpar  shift, and go to state 11
-    T_not      shift, and go to state 12
 
-    expression      go to state 69
-    operatorExp     go to state 15
-    relationalExp   go to state 16
-    conditionalExp  go to state 18
-    term            go to state 20
-    term1           go to state 21
-    term2           go to state 22
+    term   go to state 67
+    term1  go to state 21
+    term2  go to state 22
 
 
 State 32
 
-   33 assignmentExp: T_id T_mulas . expression
+   34 assignmentExp: T_id T_divas . term
 
     T_int      shift, and go to state 2
     T_flt      shift, and go to state 3
-    T_id       shift, and go to state 39
+    T_id       shift, and go to state 37
     T_openpar  shift, and go to state 11
-    T_not      shift, and go to state 12
 
-    expression      go to state 70
-    operatorExp     go to state 15
-    relationalExp   go to state 16
-    conditionalExp  go to state 18
-    term            go to state 20
-    term1           go to state 21
-    term2           go to state 22
+    term   go to state 68
+    term1  go to state 21
+    term2  go to state 22
 
 
 State 33
 
-   34 assignmentExp: T_id T_divas . expression
+   28 assignmentExp: T_id . T_asop conditionalExp
+   29              | T_id . T_asop arrayExp
+   30              | T_id . T_asop T_string
+   31              | T_id . T_addas term
+   32              | T_id . T_subas term
+   33              | T_id . T_mulas term
+   34              | T_id . T_divas term
 
-    T_int      shift, and go to state 2
-    T_flt      shift, and go to state 3
-    T_id       shift, and go to state 39
-    T_openpar  shift, and go to state 11
-    T_not      shift, and go to state 12
-
-    expression      go to state 71
-    operatorExp     go to state 15
-    relationalExp   go to state 16
-    conditionalExp  go to state 18
-    term            go to state 20
-    term1           go to state 21
-    term2           go to state 22
+    T_asop   shift, and go to state 28
+    T_addas  shift, and go to state 29
+    T_subas  shift, and go to state 30
+    T_mulas  shift, and go to state 31
+    T_divas  shift, and go to state 32
 
 
 State 34
 
-   35 assignmentExp: T_id T_modas . expression
+   53 whileExp: statement . whileExp
 
-    T_int      shift, and go to state 2
-    T_flt      shift, and go to state 3
-    T_id       shift, and go to state 39
-    T_openpar  shift, and go to state 11
-    T_not      shift, and go to state 12
+    T_id      shift, and go to state 33
+    T_begin   shift, and go to state 5
+    T_case    shift, and go to state 6
+    T_while   shift, and go to state 7
+    T_return  shift, and go to state 8
+    T_def     shift, and go to state 9
+    T_class   shift, and go to state 10
 
-    expression      go to state 72
-    operatorExp     go to state 15
-    relationalExp   go to state 16
-    conditionalExp  go to state 18
-    term            go to state 20
-    term1           go to state 21
-    term2           go to state 22
+    $default  reduce using rule 54 (whileExp)
+
+    assignmentExp  go to state 17
+    statement      go to state 34
+    iterStat       go to state 23
+    whileExp       go to state 69
+    selStat        go to state 24
+    functionStat   go to state 25
+    classStat      go to state 26
 
 
 State 35
 
-   28 assignmentExp: T_id . T_asop conditionalExp
-   29              | T_id . T_asop arrayExp
-   30              | T_id . T_asop T_string
-   31              | T_id . T_addas expression
-   32              | T_id . T_subas expression
-   33              | T_id . T_mulas expression
-   34              | T_id . T_divas expression
-   35              | T_id . T_modas expression
-   36              | T_id . T_expas expression
+   52 iterStat: T_begin whileExp . T_end T_while conditionalExp
 
-    T_asop   shift, and go to state 28
-    T_expas  shift, and go to state 29
-    T_addas  shift, and go to state 30
-    T_subas  shift, and go to state 31
-    T_mulas  shift, and go to state 32
-    T_divas  shift, and go to state 33
-    T_modas  shift, and go to state 34
+    T_end  shift, and go to state 70
 
 
 State 36
 
-   55 whileExp: statement . whileExp
+   55 selStat: T_case T_id . whenStat T_end
 
-    T_id      shift, and go to state 35
-    T_begin   shift, and go to state 5
-    T_case    shift, and go to state 6
-    T_while   shift, and go to state 7
-    T_return  shift, and go to state 8
-    T_def     shift, and go to state 9
-    T_class   shift, and go to state 10
+    T_when  shift, and go to state 71
 
-    $default  reduce using rule 56 (whileExp)
-
-    assignmentExp  go to state 17
-    statement      go to state 36
-    iterStat       go to state 23
-    whileExp       go to state 73
-    selStat        go to state 24
-    functionStat   go to state 25
-    classStat      go to state 26
+    whenStat  go to state 72
 
 
 State 37
 
-   54 iterStat: T_begin whileExp . T_end T_while conditionalExp
+   50 term2: T_id .
 
-    T_end  shift, and go to state 74
+    $default  reduce using rule 50 (term2)
 
 
 State 38
 
-   57 selStat: T_case T_id . whenStat T_end
+   36 conditionalExp: conditionalExp . T_and conditionalExp
+   37               | conditionalExp . T_or conditionalExp
+   51 iterStat: T_while conditionalExp . T_do whileExp T_end
 
-    T_when  shift, and go to state 75
-
-    whenStat  go to state 76
+    T_do   shift, and go to state 73
+    T_and  shift, and go to state 59
+    T_or   shift, and go to state 60
 
 
 State 39
 
-   52 term2: T_id .
+   39 statement: T_return term .
 
-    $default  reduce using rule 52 (term2)
+    $default  reduce using rule 39 (statement)
 
 
 State 40
 
-   38 conditionalExp: conditionalExp . T_and conditionalExp
-   39               | conditionalExp . T_or conditionalExp
-   53 iterStat: T_while conditionalExp . T_do whileExp T_end
+   63 functionStat: T_def T_id . T_openpar T_id T_closepar funcExp T_end
 
-    T_do   shift, and go to state 77
-    T_and  shift, and go to state 61
-    T_or   shift, and go to state 62
+    T_openpar  shift, and go to state 74
 
 
 State 41
 
-   41 statement: T_return term .
+   67 classStat: T_class T_id . classExp T_end
 
-    $default  reduce using rule 41 (statement)
-
-
-State 42
-
-   65 functionStat: T_def T_id . T_openpar T_id T_closepar funcExp T_end
-
-    T_openpar  shift, and go to state 78
-
-
-State 43
-
-   69 classStat: T_class T_id . classExp T_end
-
-    T_id      shift, and go to state 35
+    T_id      shift, and go to state 33
     T_begin   shift, and go to state 5
     T_case    shift, and go to state 6
     T_while   shift, and go to state 7
@@ -822,15 +756,15 @@ State 43
     T_class   shift, and go to state 10
 
     assignmentExp  go to state 17
-    statement      go to state 79
+    statement      go to state 75
     iterStat       go to state 23
     selStat        go to state 24
     functionStat   go to state 25
     classStat      go to state 26
-    classExp       go to state 80
+    classExp       go to state 76
 
 
-State 44
+State 42
 
     7 operatorExp: operatorExp . T_mul operatorExp
     8            | operatorExp . T_div operatorExp
@@ -838,57 +772,117 @@ State 44
    10            | operatorExp . T_minus operatorExp
    11            | operatorExp . T_mod operatorExp
    12            | operatorExp . T_ccomp operatorExp
-   50 term1: T_openpar operatorExp . T_closepar
+   48 term1: T_openpar operatorExp . T_closepar
 
-    T_plus      shift, and go to state 49
-    T_minus     shift, and go to state 50
-    T_mul       shift, and go to state 51
-    T_div       shift, and go to state 52
-    T_mod       shift, and go to state 53
-    T_closepar  shift, and go to state 81
-    T_ccomp     shift, and go to state 54
-
-
-State 45
-
-   38 conditionalExp: conditionalExp . T_and conditionalExp
-   39               | conditionalExp . T_or conditionalExp
-   40               | T_not conditionalExp .
-
-    T_and  shift, and go to state 61
-    T_or   shift, and go to state 62
-
-    $default  reduce using rule 40 (conditionalExp)
+    T_plus      shift, and go to state 47
+    T_minus     shift, and go to state 48
+    T_mul       shift, and go to state 49
+    T_div       shift, and go to state 50
+    T_mod       shift, and go to state 51
+    T_closepar  shift, and go to state 77
+    T_ccomp     shift, and go to state 52
 
 
-State 46
+State 43
+
+   36 conditionalExp: conditionalExp . T_and conditionalExp
+   37               | conditionalExp . T_or conditionalExp
+   38               | T_not conditionalExp .
+
+    T_and  shift, and go to state 59
+    T_or   shift, and go to state 60
+
+    $default  reduce using rule 38 (conditionalExp)
+
+
+State 44
 
     0 $accept: line $end .
 
     $default  accept
 
 
-State 47
+State 45
 
     2 line: line expression .
 
     $default  reduce using rule 2 (line)
 
 
-State 48
+State 46
 
     4 line: line statement .
 
     $default  reduce using rule 4 (line)
 
 
-State 49
+State 47
 
     9 operatorExp: operatorExp T_plus . operatorExp
 
     T_int      shift, and go to state 2
     T_flt      shift, and go to state 3
-    T_id       shift, and go to state 39
+    T_id       shift, and go to state 37
+    T_openpar  shift, and go to state 11
+
+    operatorExp  go to state 78
+    term         go to state 20
+    term1        go to state 21
+    term2        go to state 22
+
+
+State 48
+
+   10 operatorExp: operatorExp T_minus . operatorExp
+
+    T_int      shift, and go to state 2
+    T_flt      shift, and go to state 3
+    T_id       shift, and go to state 37
+    T_openpar  shift, and go to state 11
+
+    operatorExp  go to state 79
+    term         go to state 20
+    term1        go to state 21
+    term2        go to state 22
+
+
+State 49
+
+    7 operatorExp: operatorExp T_mul . operatorExp
+
+    T_int      shift, and go to state 2
+    T_flt      shift, and go to state 3
+    T_id       shift, and go to state 37
+    T_openpar  shift, and go to state 11
+
+    operatorExp  go to state 80
+    term         go to state 20
+    term1        go to state 21
+    term2        go to state 22
+
+
+State 50
+
+    8 operatorExp: operatorExp T_div . operatorExp
+
+    T_int      shift, and go to state 2
+    T_flt      shift, and go to state 3
+    T_id       shift, and go to state 37
+    T_openpar  shift, and go to state 11
+
+    operatorExp  go to state 81
+    term         go to state 20
+    term1        go to state 21
+    term2        go to state 22
+
+
+State 51
+
+   11 operatorExp: operatorExp T_mod . operatorExp
+
+    T_int      shift, and go to state 2
+    T_flt      shift, and go to state 3
+    T_id       shift, and go to state 37
     T_openpar  shift, and go to state 11
 
     operatorExp  go to state 82
@@ -897,13 +891,13 @@ State 49
     term2        go to state 22
 
 
-State 50
+State 52
 
-   10 operatorExp: operatorExp T_minus . operatorExp
+   12 operatorExp: operatorExp T_ccomp . operatorExp
 
     T_int      shift, and go to state 2
     T_flt      shift, and go to state 3
-    T_id       shift, and go to state 39
+    T_id       shift, and go to state 37
     T_openpar  shift, and go to state 11
 
     operatorExp  go to state 83
@@ -912,73 +906,77 @@ State 50
     term2        go to state 22
 
 
-State 51
-
-    7 operatorExp: operatorExp T_mul . operatorExp
-
-    T_int      shift, and go to state 2
-    T_flt      shift, and go to state 3
-    T_id       shift, and go to state 39
-    T_openpar  shift, and go to state 11
-
-    operatorExp  go to state 84
-    term         go to state 20
-    term1        go to state 21
-    term2        go to state 22
-
-
-State 52
-
-    8 operatorExp: operatorExp T_div . operatorExp
-
-    T_int      shift, and go to state 2
-    T_flt      shift, and go to state 3
-    T_id       shift, and go to state 39
-    T_openpar  shift, and go to state 11
-
-    operatorExp  go to state 85
-    term         go to state 20
-    term1        go to state 21
-    term2        go to state 22
-
-
 State 53
-
-   11 operatorExp: operatorExp T_mod . operatorExp
-
-    T_int      shift, and go to state 2
-    T_flt      shift, and go to state 3
-    T_id       shift, and go to state 39
-    T_openpar  shift, and go to state 11
-
-    operatorExp  go to state 86
-    term         go to state 20
-    term1        go to state 21
-    term2        go to state 22
-
-
-State 54
-
-   12 operatorExp: operatorExp T_ccomp . operatorExp
-
-    T_int      shift, and go to state 2
-    T_flt      shift, and go to state 3
-    T_id       shift, and go to state 39
-    T_openpar  shift, and go to state 11
-
-    operatorExp  go to state 87
-    term         go to state 20
-    term1        go to state 21
-    term2        go to state 22
-
-
-State 55
 
    18 relationalExp: relationalExp T_comp . relationalExp
 
     T_int      shift, and go to state 2
     T_flt      shift, and go to state 3
-    T_id       shift, and go to state 39
+    T_id       shift, and go to state 37
+    T_openpar  shift, and go to state 11
+
+    operatorExp    go to state 15
+    relationalExp  go to state 84
+    term           go to state 20
+    term1          go to state 21
+    term2          go to state 22
+
+
+State 54
+
+   15 relationalExp: relationalExp T_gt . relationalExp
+
+    T_int      shift, and go to state 2
+    T_flt      shift, and go to state 3
+    T_id       shift, and go to state 37
+    T_openpar  shift, and go to state 11
+
+    operatorExp    go to state 15
+    relationalExp  go to state 85
+    term           go to state 20
+    term1          go to state 21
+    term2          go to state 22
+
+
+State 55
+
+   14 relationalExp: relationalExp T_lt . relationalExp
+
+    T_int      shift, and go to state 2
+    T_flt      shift, and go to state 3
+    T_id       shift, and go to state 37
+    T_openpar  shift, and go to state 11
+
+    operatorExp    go to state 15
+    relationalExp  go to state 86
+    term           go to state 20
+    term1          go to state 21
+    term2          go to state 22
+
+
+State 56
+
+   17 relationalExp: relationalExp T_gte . relationalExp
+
+    T_int      shift, and go to state 2
+    T_flt      shift, and go to state 3
+    T_id       shift, and go to state 37
+    T_openpar  shift, and go to state 11
+
+    operatorExp    go to state 15
+    relationalExp  go to state 87
+    term           go to state 20
+    term1          go to state 21
+    term2          go to state 22
+
+
+State 57
+
+   16 relationalExp: relationalExp T_lte . relationalExp
+
+    T_int      shift, and go to state 2
+    T_flt      shift, and go to state 3
+    T_id       shift, and go to state 37
     T_openpar  shift, and go to state 11
 
     operatorExp    go to state 15
@@ -988,13 +986,13 @@ State 55
     term2          go to state 22
 
 
-State 56
+State 58
 
-   15 relationalExp: relationalExp T_gt . relationalExp
+   19 relationalExp: relationalExp T_ne . relationalExp
 
     T_int      shift, and go to state 2
     T_flt      shift, and go to state 3
-    T_id       shift, and go to state 39
+    T_id       shift, and go to state 37
     T_openpar  shift, and go to state 11
 
     operatorExp    go to state 15
@@ -1004,290 +1002,212 @@ State 56
     term2          go to state 22
 
 
-State 57
-
-   14 relationalExp: relationalExp T_lt . relationalExp
-
-    T_int      shift, and go to state 2
-    T_flt      shift, and go to state 3
-    T_id       shift, and go to state 39
-    T_openpar  shift, and go to state 11
-
-    operatorExp    go to state 15
-    relationalExp  go to state 90
-    term           go to state 20
-    term1          go to state 21
-    term2          go to state 22
-
-
-State 58
-
-   17 relationalExp: relationalExp T_gte . relationalExp
-
-    T_int      shift, and go to state 2
-    T_flt      shift, and go to state 3
-    T_id       shift, and go to state 39
-    T_openpar  shift, and go to state 11
-
-    operatorExp    go to state 15
-    relationalExp  go to state 91
-    term           go to state 20
-    term1          go to state 21
-    term2          go to state 22
-
-
 State 59
 
-   16 relationalExp: relationalExp T_lte . relationalExp
+   36 conditionalExp: conditionalExp T_and . conditionalExp
 
     T_int      shift, and go to state 2
     T_flt      shift, and go to state 3
-    T_id       shift, and go to state 39
+    T_id       shift, and go to state 37
     T_openpar  shift, and go to state 11
+    T_not      shift, and go to state 12
 
-    operatorExp    go to state 15
-    relationalExp  go to state 92
-    term           go to state 20
-    term1          go to state 21
-    term2          go to state 22
+    operatorExp     go to state 15
+    relationalExp   go to state 16
+    conditionalExp  go to state 90
+    term            go to state 20
+    term1           go to state 21
+    term2           go to state 22
 
 
 State 60
 
-   19 relationalExp: relationalExp T_ne . relationalExp
+   37 conditionalExp: conditionalExp T_or . conditionalExp
 
     T_int      shift, and go to state 2
     T_flt      shift, and go to state 3
-    T_id       shift, and go to state 39
+    T_id       shift, and go to state 37
     T_openpar  shift, and go to state 11
+    T_not      shift, and go to state 12
 
-    operatorExp    go to state 15
-    relationalExp  go to state 93
-    term           go to state 20
-    term1          go to state 21
-    term2          go to state 22
+    operatorExp     go to state 15
+    relationalExp   go to state 16
+    conditionalExp  go to state 91
+    term            go to state 20
+    term1           go to state 21
+    term2           go to state 22
 
 
 State 61
-
-   38 conditionalExp: conditionalExp T_and . conditionalExp
-
-    T_int      shift, and go to state 2
-    T_flt      shift, and go to state 3
-    T_id       shift, and go to state 39
-    T_openpar  shift, and go to state 11
-    T_not      shift, and go to state 12
-
-    operatorExp     go to state 15
-    relationalExp   go to state 16
-    conditionalExp  go to state 94
-    term            go to state 20
-    term1           go to state 21
-    term2           go to state 22
-
-
-State 62
-
-   39 conditionalExp: conditionalExp T_or . conditionalExp
-
-    T_int      shift, and go to state 2
-    T_flt      shift, and go to state 3
-    T_id       shift, and go to state 39
-    T_openpar  shift, and go to state 11
-    T_not      shift, and go to state 12
-
-    operatorExp     go to state 15
-    relationalExp   go to state 16
-    conditionalExp  go to state 95
-    term            go to state 20
-    term1           go to state 21
-    term2           go to state 22
-
-
-State 63
 
    30 assignmentExp: T_id T_asop T_string .
 
     $default  reduce using rule 30 (assignmentExp)
 
 
-State 64
+State 62
 
    21 arrayExp: T_openbox . numList T_closebox
 
-    T_int  shift, and go to state 96
-    T_flt  shift, and go to state 97
+    T_int  shift, and go to state 92
+    T_flt  shift, and go to state 93
 
-    numList  go to state 98
-    intList  go to state 99
-    fltList  go to state 100
+    numList  go to state 94
+    intList  go to state 95
+    fltList  go to state 96
 
 
-State 65
+State 63
 
    29 assignmentExp: T_id T_asop arrayExp .
 
     $default  reduce using rule 29 (assignmentExp)
 
 
-State 66
+State 64
 
    28 assignmentExp: T_id T_asop conditionalExp .
-   38 conditionalExp: conditionalExp . T_and conditionalExp
-   39               | conditionalExp . T_or conditionalExp
+   36 conditionalExp: conditionalExp . T_and conditionalExp
+   37               | conditionalExp . T_or conditionalExp
 
-    T_and  shift, and go to state 61
-    T_or   shift, and go to state 62
+    T_and  shift, and go to state 59
+    T_or   shift, and go to state 60
 
     $default  reduce using rule 28 (assignmentExp)
 
 
-State 67
+State 65
 
-   36 assignmentExp: T_id T_expas expression .
-
-    $default  reduce using rule 36 (assignmentExp)
-
-
-State 68
-
-   31 assignmentExp: T_id T_addas expression .
+   31 assignmentExp: T_id T_addas term .
 
     $default  reduce using rule 31 (assignmentExp)
 
 
-State 69
+State 66
 
-   32 assignmentExp: T_id T_subas expression .
+   32 assignmentExp: T_id T_subas term .
 
     $default  reduce using rule 32 (assignmentExp)
 
 
-State 70
+State 67
 
-   33 assignmentExp: T_id T_mulas expression .
+   33 assignmentExp: T_id T_mulas term .
 
     $default  reduce using rule 33 (assignmentExp)
 
 
-State 71
+State 68
 
-   34 assignmentExp: T_id T_divas expression .
+   34 assignmentExp: T_id T_divas term .
 
     $default  reduce using rule 34 (assignmentExp)
 
 
-State 72
+State 69
 
-   35 assignmentExp: T_id T_modas expression .
+   53 whileExp: statement whileExp .
 
-    $default  reduce using rule 35 (assignmentExp)
-
-
-State 73
-
-   55 whileExp: statement whileExp .
-
-    $default  reduce using rule 55 (whileExp)
+    $default  reduce using rule 53 (whileExp)
 
 
-State 74
+State 70
 
-   54 iterStat: T_begin whileExp T_end . T_while conditionalExp
+   52 iterStat: T_begin whileExp T_end . T_while conditionalExp
 
-    T_while  shift, and go to state 101
+    T_while  shift, and go to state 97
 
 
-State 75
+State 71
 
-   58 whenStat: T_when . term whenExp whenOptional
+   56 whenStat: T_when . term whenExp whenOptional
 
     T_int      shift, and go to state 2
     T_flt      shift, and go to state 3
-    T_id       shift, and go to state 39
+    T_id       shift, and go to state 37
     T_openpar  shift, and go to state 11
 
-    term   go to state 102
+    term   go to state 98
     term1  go to state 21
     term2  go to state 22
 
 
+State 72
+
+   55 selStat: T_case T_id whenStat . T_end
+
+    T_end  shift, and go to state 99
+
+
+State 73
+
+   51 iterStat: T_while conditionalExp T_do . whileExp T_end
+
+    T_id      shift, and go to state 33
+    T_begin   shift, and go to state 5
+    T_case    shift, and go to state 6
+    T_while   shift, and go to state 7
+    T_return  shift, and go to state 8
+    T_def     shift, and go to state 9
+    T_class   shift, and go to state 10
+
+    $default  reduce using rule 54 (whileExp)
+
+    assignmentExp  go to state 17
+    statement      go to state 34
+    iterStat       go to state 23
+    whileExp       go to state 100
+    selStat        go to state 24
+    functionStat   go to state 25
+    classStat      go to state 26
+
+
+State 74
+
+   63 functionStat: T_def T_id T_openpar . T_id T_closepar funcExp T_end
+
+    T_id  shift, and go to state 101
+
+
+State 75
+
+   68 classExp: statement . classExp2
+
+    T_id      shift, and go to state 33
+    T_begin   shift, and go to state 5
+    T_case    shift, and go to state 6
+    T_while   shift, and go to state 7
+    T_return  shift, and go to state 8
+    T_def     shift, and go to state 9
+    T_class   shift, and go to state 10
+
+    $default  reduce using rule 70 (classExp2)
+
+    assignmentExp  go to state 17
+    statement      go to state 75
+    iterStat       go to state 23
+    selStat        go to state 24
+    functionStat   go to state 25
+    classStat      go to state 26
+    classExp       go to state 102
+    classExp2      go to state 103
+
+
 State 76
 
-   57 selStat: T_case T_id whenStat . T_end
+   67 classStat: T_class T_id classExp . T_end
 
-    T_end  shift, and go to state 103
+    T_end  shift, and go to state 104
 
 
 State 77
 
-   53 iterStat: T_while conditionalExp T_do . whileExp T_end
+   48 term1: T_openpar operatorExp T_closepar .
 
-    T_id      shift, and go to state 35
-    T_begin   shift, and go to state 5
-    T_case    shift, and go to state 6
-    T_while   shift, and go to state 7
-    T_return  shift, and go to state 8
-    T_def     shift, and go to state 9
-    T_class   shift, and go to state 10
-
-    $default  reduce using rule 56 (whileExp)
-
-    assignmentExp  go to state 17
-    statement      go to state 36
-    iterStat       go to state 23
-    whileExp       go to state 104
-    selStat        go to state 24
-    functionStat   go to state 25
-    classStat      go to state 26
+    $default  reduce using rule 48 (term1)
 
 
 State 78
-
-   65 functionStat: T_def T_id T_openpar . T_id T_closepar funcExp T_end
-
-    T_id  shift, and go to state 105
-
-
-State 79
-
-   70 classExp: statement . classExp2
-
-    T_id      shift, and go to state 35
-    T_begin   shift, and go to state 5
-    T_case    shift, and go to state 6
-    T_while   shift, and go to state 7
-    T_return  shift, and go to state 8
-    T_def     shift, and go to state 9
-    T_class   shift, and go to state 10
-
-    $default  reduce using rule 72 (classExp2)
-
-    assignmentExp  go to state 17
-    statement      go to state 79
-    iterStat       go to state 23
-    selStat        go to state 24
-    functionStat   go to state 25
-    classStat      go to state 26
-    classExp       go to state 106
-    classExp2      go to state 107
-
-
-State 80
-
-   69 classStat: T_class T_id classExp . T_end
-
-    T_end  shift, and go to state 108
-
-
-State 81
-
-   50 term1: T_openpar operatorExp T_closepar .
-
-    $default  reduce using rule 50 (term1)
-
-
-State 82
 
     7 operatorExp: operatorExp . T_mul operatorExp
     8            | operatorExp . T_div operatorExp
@@ -1297,15 +1217,15 @@ State 82
    11            | operatorExp . T_mod operatorExp
    12            | operatorExp . T_ccomp operatorExp
 
-    T_mul    shift, and go to state 51
-    T_div    shift, and go to state 52
-    T_mod    shift, and go to state 53
-    T_ccomp  shift, and go to state 54
+    T_mul    shift, and go to state 49
+    T_div    shift, and go to state 50
+    T_mod    shift, and go to state 51
+    T_ccomp  shift, and go to state 52
 
     $default  reduce using rule 9 (operatorExp)
 
 
-State 83
+State 79
 
     7 operatorExp: operatorExp . T_mul operatorExp
     8            | operatorExp . T_div operatorExp
@@ -1315,15 +1235,15 @@ State 83
    11            | operatorExp . T_mod operatorExp
    12            | operatorExp . T_ccomp operatorExp
 
-    T_mul    shift, and go to state 51
-    T_div    shift, and go to state 52
-    T_mod    shift, and go to state 53
-    T_ccomp  shift, and go to state 54
+    T_mul    shift, and go to state 49
+    T_div    shift, and go to state 50
+    T_mod    shift, and go to state 51
+    T_ccomp  shift, and go to state 52
 
     $default  reduce using rule 10 (operatorExp)
 
 
-State 84
+State 80
 
     7 operatorExp: operatorExp . T_mul operatorExp
     7            | operatorExp T_mul operatorExp .
@@ -1333,12 +1253,12 @@ State 84
    11            | operatorExp . T_mod operatorExp
    12            | operatorExp . T_ccomp operatorExp
 
-    T_ccomp  shift, and go to state 54
+    T_ccomp  shift, and go to state 52
 
     $default  reduce using rule 7 (operatorExp)
 
 
-State 85
+State 81
 
     7 operatorExp: operatorExp . T_mul operatorExp
     8            | operatorExp . T_div operatorExp
@@ -1348,12 +1268,12 @@ State 85
    11            | operatorExp . T_mod operatorExp
    12            | operatorExp . T_ccomp operatorExp
 
-    T_ccomp  shift, and go to state 54
+    T_ccomp  shift, and go to state 52
 
     $default  reduce using rule 8 (operatorExp)
 
 
-State 86
+State 82
 
     7 operatorExp: operatorExp . T_mul operatorExp
     8            | operatorExp . T_div operatorExp
@@ -1363,12 +1283,12 @@ State 86
    11            | operatorExp T_mod operatorExp .
    12            | operatorExp . T_ccomp operatorExp
 
-    T_ccomp  shift, and go to state 54
+    T_ccomp  shift, and go to state 52
 
     $default  reduce using rule 11 (operatorExp)
 
 
-State 87
+State 83
 
     7 operatorExp: operatorExp . T_mul operatorExp
     8            | operatorExp . T_div operatorExp
@@ -1381,7 +1301,7 @@ State 87
     $default  reduce using rule 12 (operatorExp)
 
 
-State 88
+State 84
 
    14 relationalExp: relationalExp . T_lt relationalExp
    15              | relationalExp . T_gt relationalExp
@@ -1394,7 +1314,7 @@ State 88
     $default  reduce using rule 18 (relationalExp)
 
 
-State 89
+State 85
 
    14 relationalExp: relationalExp . T_lt relationalExp
    15              | relationalExp . T_gt relationalExp
@@ -1404,15 +1324,15 @@ State 89
    18              | relationalExp . T_comp relationalExp
    19              | relationalExp . T_ne relationalExp
 
-    T_comp  shift, and go to state 55
-    T_gte   shift, and go to state 58
-    T_lte   shift, and go to state 59
-    T_ne    shift, and go to state 60
+    T_comp  shift, and go to state 53
+    T_gte   shift, and go to state 56
+    T_lte   shift, and go to state 57
+    T_ne    shift, and go to state 58
 
     $default  reduce using rule 15 (relationalExp)
 
 
-State 90
+State 86
 
    14 relationalExp: relationalExp . T_lt relationalExp
    14              | relationalExp T_lt relationalExp .
@@ -1422,15 +1342,15 @@ State 90
    18              | relationalExp . T_comp relationalExp
    19              | relationalExp . T_ne relationalExp
 
-    T_comp  shift, and go to state 55
-    T_gte   shift, and go to state 58
-    T_lte   shift, and go to state 59
-    T_ne    shift, and go to state 60
+    T_comp  shift, and go to state 53
+    T_gte   shift, and go to state 56
+    T_lte   shift, and go to state 57
+    T_ne    shift, and go to state 58
 
     $default  reduce using rule 14 (relationalExp)
 
 
-State 91
+State 87
 
    14 relationalExp: relationalExp . T_lt relationalExp
    15              | relationalExp . T_gt relationalExp
@@ -1443,7 +1363,7 @@ State 91
     $default  reduce using rule 17 (relationalExp)
 
 
-State 92
+State 88
 
    14 relationalExp: relationalExp . T_lt relationalExp
    15              | relationalExp . T_gt relationalExp
@@ -1456,7 +1376,7 @@ State 92
     $default  reduce using rule 16 (relationalExp)
 
 
-State 93
+State 89
 
    14 relationalExp: relationalExp . T_lt relationalExp
    15              | relationalExp . T_gt relationalExp
@@ -1469,90 +1389,90 @@ State 93
     $default  reduce using rule 19 (relationalExp)
 
 
-State 94
+State 90
 
-   38 conditionalExp: conditionalExp . T_and conditionalExp
-   38               | conditionalExp T_and conditionalExp .
-   39               | conditionalExp . T_or conditionalExp
+   36 conditionalExp: conditionalExp . T_and conditionalExp
+   36               | conditionalExp T_and conditionalExp .
+   37               | conditionalExp . T_or conditionalExp
 
-    T_or  shift, and go to state 62
+    T_or  shift, and go to state 60
 
-    $default  reduce using rule 38 (conditionalExp)
-
-
-State 95
-
-   38 conditionalExp: conditionalExp . T_and conditionalExp
-   39               | conditionalExp . T_or conditionalExp
-   39               | conditionalExp T_or conditionalExp .
-
-    $default  reduce using rule 39 (conditionalExp)
+    $default  reduce using rule 36 (conditionalExp)
 
 
-State 96
+State 91
+
+   36 conditionalExp: conditionalExp . T_and conditionalExp
+   37               | conditionalExp . T_or conditionalExp
+   37               | conditionalExp T_or conditionalExp .
+
+    $default  reduce using rule 37 (conditionalExp)
+
+
+State 92
 
    24 intList: T_int . T_comma intList
    25        | T_int .
 
-    T_comma  shift, and go to state 109
+    T_comma  shift, and go to state 105
 
     $default  reduce using rule 25 (intList)
 
 
-State 97
+State 93
 
    26 fltList: T_flt . T_comma fltList
    27        | T_flt .
 
-    T_comma  shift, and go to state 110
+    T_comma  shift, and go to state 106
 
     $default  reduce using rule 27 (fltList)
 
 
-State 98
+State 94
 
    21 arrayExp: T_openbox numList . T_closebox
 
-    T_closebox  shift, and go to state 111
+    T_closebox  shift, and go to state 107
 
 
-State 99
+State 95
 
    22 numList: intList .
 
     $default  reduce using rule 22 (numList)
 
 
-State 100
+State 96
 
    23 numList: fltList .
 
     $default  reduce using rule 23 (numList)
 
 
-State 101
+State 97
 
-   54 iterStat: T_begin whileExp T_end T_while . conditionalExp
+   52 iterStat: T_begin whileExp T_end T_while . conditionalExp
 
     T_int      shift, and go to state 2
     T_flt      shift, and go to state 3
-    T_id       shift, and go to state 39
+    T_id       shift, and go to state 37
     T_openpar  shift, and go to state 11
     T_not      shift, and go to state 12
 
     operatorExp     go to state 15
     relationalExp   go to state 16
-    conditionalExp  go to state 112
+    conditionalExp  go to state 108
     term            go to state 20
     term1           go to state 21
     term2           go to state 22
 
 
-State 102
+State 98
 
-   58 whenStat: T_when term . whenExp whenOptional
+   56 whenStat: T_when term . whenExp whenOptional
 
-    T_id      shift, and go to state 35
+    T_id      shift, and go to state 33
     T_begin   shift, and go to state 5
     T_case    shift, and go to state 6
     T_while   shift, and go to state 7
@@ -1561,275 +1481,275 @@ State 102
     T_class   shift, and go to state 10
 
     assignmentExp  go to state 17
-    statement      go to state 113
+    statement      go to state 109
     iterStat       go to state 23
     selStat        go to state 24
-    whenExp        go to state 114
+    whenExp        go to state 110
     functionStat   go to state 25
     classStat      go to state 26
 
 
+State 99
+
+   55 selStat: T_case T_id whenStat T_end .
+
+    $default  reduce using rule 55 (selStat)
+
+
+State 100
+
+   51 iterStat: T_while conditionalExp T_do whileExp . T_end
+
+    T_end  shift, and go to state 111
+
+
+State 101
+
+   63 functionStat: T_def T_id T_openpar T_id . T_closepar funcExp T_end
+
+    T_closepar  shift, and go to state 112
+
+
+State 102
+
+   69 classExp2: classExp .
+
+    $default  reduce using rule 69 (classExp2)
+
+
 State 103
 
-   57 selStat: T_case T_id whenStat T_end .
+   68 classExp: statement classExp2 .
 
-    $default  reduce using rule 57 (selStat)
+    $default  reduce using rule 68 (classExp)
 
 
 State 104
 
-   53 iterStat: T_while conditionalExp T_do whileExp . T_end
+   67 classStat: T_class T_id classExp T_end .
 
-    T_end  shift, and go to state 115
+    $default  reduce using rule 67 (classStat)
 
 
 State 105
 
-   65 functionStat: T_def T_id T_openpar T_id . T_closepar funcExp T_end
+   24 intList: T_int T_comma . intList
 
-    T_closepar  shift, and go to state 116
+    T_int  shift, and go to state 92
+
+    intList  go to state 113
 
 
 State 106
 
-   71 classExp2: classExp .
+   26 fltList: T_flt T_comma . fltList
 
-    $default  reduce using rule 71 (classExp2)
+    T_flt  shift, and go to state 93
+
+    fltList  go to state 114
 
 
 State 107
-
-   70 classExp: statement classExp2 .
-
-    $default  reduce using rule 70 (classExp)
-
-
-State 108
-
-   69 classStat: T_class T_id classExp T_end .
-
-    $default  reduce using rule 69 (classStat)
-
-
-State 109
-
-   24 intList: T_int T_comma . intList
-
-    T_int  shift, and go to state 96
-
-    intList  go to state 117
-
-
-State 110
-
-   26 fltList: T_flt T_comma . fltList
-
-    T_flt  shift, and go to state 97
-
-    fltList  go to state 118
-
-
-State 111
 
    21 arrayExp: T_openbox numList T_closebox .
 
     $default  reduce using rule 21 (arrayExp)
 
 
+State 108
+
+   36 conditionalExp: conditionalExp . T_and conditionalExp
+   37               | conditionalExp . T_or conditionalExp
+   52 iterStat: T_begin whileExp T_end T_while conditionalExp .
+
+    T_and  shift, and go to state 59
+    T_or   shift, and go to state 60
+
+    $default  reduce using rule 52 (iterStat)
+
+
+State 109
+
+   57 whenExp: statement . whenExpOpt
+
+    T_id      shift, and go to state 33
+    T_begin   shift, and go to state 5
+    T_case    shift, and go to state 6
+    T_while   shift, and go to state 7
+    T_return  shift, and go to state 8
+    T_def     shift, and go to state 9
+    T_class   shift, and go to state 10
+
+    $default  reduce using rule 62 (whenExpOpt)
+
+    assignmentExp  go to state 17
+    statement      go to state 109
+    iterStat       go to state 23
+    selStat        go to state 24
+    whenExp        go to state 115
+    whenExpOpt     go to state 116
+    functionStat   go to state 25
+    classStat      go to state 26
+
+
+State 110
+
+   56 whenStat: T_when term whenExp . whenOptional
+
+    T_when  shift, and go to state 71
+    T_else  shift, and go to state 117
+
+    $default  reduce using rule 60 (whenOptional)
+
+    whenStat      go to state 118
+    whenOptional  go to state 119
+
+
+State 111
+
+   51 iterStat: T_while conditionalExp T_do whileExp T_end .
+
+    $default  reduce using rule 51 (iterStat)
+
+
 State 112
 
-   38 conditionalExp: conditionalExp . T_and conditionalExp
-   39               | conditionalExp . T_or conditionalExp
-   54 iterStat: T_begin whileExp T_end T_while conditionalExp .
+   63 functionStat: T_def T_id T_openpar T_id T_closepar . funcExp T_end
 
-    T_and  shift, and go to state 61
-    T_or   shift, and go to state 62
+    T_id      shift, and go to state 33
+    T_begin   shift, and go to state 5
+    T_case    shift, and go to state 6
+    T_while   shift, and go to state 7
+    T_return  shift, and go to state 8
+    T_def     shift, and go to state 9
+    T_class   shift, and go to state 10
 
-    $default  reduce using rule 54 (iterStat)
+    assignmentExp  go to state 17
+    statement      go to state 120
+    iterStat       go to state 23
+    selStat        go to state 24
+    functionStat   go to state 25
+    funcExp        go to state 121
+    classStat      go to state 26
 
 
 State 113
-
-   59 whenExp: statement . whenExpOpt
-
-    T_id      shift, and go to state 35
-    T_begin   shift, and go to state 5
-    T_case    shift, and go to state 6
-    T_while   shift, and go to state 7
-    T_return  shift, and go to state 8
-    T_def     shift, and go to state 9
-    T_class   shift, and go to state 10
-
-    $default  reduce using rule 64 (whenExpOpt)
-
-    assignmentExp  go to state 17
-    statement      go to state 113
-    iterStat       go to state 23
-    selStat        go to state 24
-    whenExp        go to state 119
-    whenExpOpt     go to state 120
-    functionStat   go to state 25
-    classStat      go to state 26
-
-
-State 114
-
-   58 whenStat: T_when term whenExp . whenOptional
-
-    T_when  shift, and go to state 75
-    T_else  shift, and go to state 121
-
-    $default  reduce using rule 62 (whenOptional)
-
-    whenStat      go to state 122
-    whenOptional  go to state 123
-
-
-State 115
-
-   53 iterStat: T_while conditionalExp T_do whileExp T_end .
-
-    $default  reduce using rule 53 (iterStat)
-
-
-State 116
-
-   65 functionStat: T_def T_id T_openpar T_id T_closepar . funcExp T_end
-
-    T_id      shift, and go to state 35
-    T_begin   shift, and go to state 5
-    T_case    shift, and go to state 6
-    T_while   shift, and go to state 7
-    T_return  shift, and go to state 8
-    T_def     shift, and go to state 9
-    T_class   shift, and go to state 10
-
-    assignmentExp  go to state 17
-    statement      go to state 124
-    iterStat       go to state 23
-    selStat        go to state 24
-    functionStat   go to state 25
-    funcExp        go to state 125
-    classStat      go to state 26
-
-
-State 117
 
    24 intList: T_int T_comma intList .
 
     $default  reduce using rule 24 (intList)
 
 
-State 118
+State 114
 
    26 fltList: T_flt T_comma fltList .
 
     $default  reduce using rule 26 (fltList)
 
 
+State 115
+
+   61 whenExpOpt: whenExp .
+
+    $default  reduce using rule 61 (whenExpOpt)
+
+
+State 116
+
+   57 whenExp: statement whenExpOpt .
+
+    $default  reduce using rule 57 (whenExp)
+
+
+State 117
+
+   58 whenOptional: T_else . whenExp
+
+    T_id      shift, and go to state 33
+    T_begin   shift, and go to state 5
+    T_case    shift, and go to state 6
+    T_while   shift, and go to state 7
+    T_return  shift, and go to state 8
+    T_def     shift, and go to state 9
+    T_class   shift, and go to state 10
+
+    assignmentExp  go to state 17
+    statement      go to state 109
+    iterStat       go to state 23
+    selStat        go to state 24
+    whenExp        go to state 122
+    functionStat   go to state 25
+    classStat      go to state 26
+
+
+State 118
+
+   59 whenOptional: whenStat .
+
+    $default  reduce using rule 59 (whenOptional)
+
+
 State 119
 
-   63 whenExpOpt: whenExp .
+   56 whenStat: T_when term whenExp whenOptional .
 
-    $default  reduce using rule 63 (whenExpOpt)
+    $default  reduce using rule 56 (whenStat)
 
 
 State 120
 
-   59 whenExp: statement whenExpOpt .
+   64 funcExp: statement . funcExp2
 
-    $default  reduce using rule 59 (whenExp)
+    T_id      shift, and go to state 33
+    T_begin   shift, and go to state 5
+    T_case    shift, and go to state 6
+    T_while   shift, and go to state 7
+    T_return  shift, and go to state 8
+    T_def     shift, and go to state 9
+    T_class   shift, and go to state 10
+
+    $default  reduce using rule 66 (funcExp2)
+
+    assignmentExp  go to state 17
+    statement      go to state 120
+    iterStat       go to state 23
+    selStat        go to state 24
+    functionStat   go to state 25
+    funcExp        go to state 123
+    funcExp2       go to state 124
+    classStat      go to state 26
 
 
 State 121
 
-   60 whenOptional: T_else . whenExp
+   63 functionStat: T_def T_id T_openpar T_id T_closepar funcExp . T_end
 
-    T_id      shift, and go to state 35
-    T_begin   shift, and go to state 5
-    T_case    shift, and go to state 6
-    T_while   shift, and go to state 7
-    T_return  shift, and go to state 8
-    T_def     shift, and go to state 9
-    T_class   shift, and go to state 10
-
-    assignmentExp  go to state 17
-    statement      go to state 113
-    iterStat       go to state 23
-    selStat        go to state 24
-    whenExp        go to state 126
-    functionStat   go to state 25
-    classStat      go to state 26
+    T_end  shift, and go to state 125
 
 
 State 122
 
-   61 whenOptional: whenStat .
+   58 whenOptional: T_else whenExp .
 
-    $default  reduce using rule 61 (whenOptional)
+    $default  reduce using rule 58 (whenOptional)
 
 
 State 123
 
-   58 whenStat: T_when term whenExp whenOptional .
+   65 funcExp2: funcExp .
 
-    $default  reduce using rule 58 (whenStat)
+    $default  reduce using rule 65 (funcExp2)
 
 
 State 124
 
-   66 funcExp: statement . funcExp2
+   64 funcExp: statement funcExp2 .
 
-    T_id      shift, and go to state 35
-    T_begin   shift, and go to state 5
-    T_case    shift, and go to state 6
-    T_while   shift, and go to state 7
-    T_return  shift, and go to state 8
-    T_def     shift, and go to state 9
-    T_class   shift, and go to state 10
-
-    $default  reduce using rule 68 (funcExp2)
-
-    assignmentExp  go to state 17
-    statement      go to state 124
-    iterStat       go to state 23
-    selStat        go to state 24
-    functionStat   go to state 25
-    funcExp        go to state 127
-    funcExp2       go to state 128
-    classStat      go to state 26
+    $default  reduce using rule 64 (funcExp)
 
 
 State 125
 
-   65 functionStat: T_def T_id T_openpar T_id T_closepar funcExp . T_end
+   63 functionStat: T_def T_id T_openpar T_id T_closepar funcExp T_end .
 
-    T_end  shift, and go to state 129
-
-
-State 126
-
-   60 whenOptional: T_else whenExp .
-
-    $default  reduce using rule 60 (whenOptional)
-
-
-State 127
-
-   67 funcExp2: funcExp .
-
-    $default  reduce using rule 67 (funcExp2)
-
-
-State 128
-
-   66 funcExp: statement funcExp2 .
-
-    $default  reduce using rule 66 (funcExp)
-
-
-State 129
-
-   65 functionStat: T_def T_id T_openpar T_id T_closepar funcExp T_end .
-
-    $default  reduce using rule 65 (functionStat)
+    $default  reduce using rule 63 (functionStat)

@@ -136,6 +136,7 @@ void print_node(struct node *root); */
 //%type <floatval> term1b
 %type <table> term1
 %type <table> term2
+%type <table> term
 
 
 
@@ -180,8 +181,8 @@ operatorExp		: operatorExp T_mul operatorExp {
                                                 }
 											    else if($1.uni_val_flag == 0 && $3.uni_val_flag == 0)   
                                                 {
-                                                    $$.uni_val_flag = 0;
-                                                    $$.val.int_val = $1.val.int_val / $3.val.int_val;
+                                                    $$.uni_val_flag = 1;
+                                                    $$.val.float_val = (float) $1.val.int_val / (float) $3.val.int_val;
                                                 }
                                                 else if($1.uni_val_flag == 0 && $3.uni_val_flag == 1)   
                                                 {
@@ -226,22 +227,22 @@ operatorExp		: operatorExp T_mul operatorExp {
                                                         if($1.uni_val_flag == 0 && $3.uni_val_flag == 0)   
                                                         {
                                                             $$.uni_val_flag = 0;
-                                                            $$.val.int_val = $1.val.int_val * $3.val.int_val;
+                                                            $$.val.int_val = $1.val.int_val - $3.val.int_val;
                                                         }
                                                         else if($1.uni_val_flag == 0 && $3.uni_val_flag == 1)   
                                                         {
                                                             $$.uni_val_flag = 1;
-                                                            $$.val.float_val = $1.val.int_val * $3.val.float_val;
+                                                            $$.val.float_val = $1.val.int_val - $3.val.float_val;
                                                         }
                                                         else if($1.uni_val_flag == 1 && $3.uni_val_flag == 0)   
                                                         {
                                                             $$.uni_val_flag = 1;
-                                                            $$.val.float_val = $1.val.float_val * $3.val.int_val;
+                                                            $$.val.float_val = $1.val.float_val - $3.val.int_val;
                                                         }
                                                         else if($1.uni_val_flag == 1 && $3.uni_val_flag == 1)   
                                                         {
                                                             $$.uni_val_flag = 1;
-                                                            $$.val.float_val = $1.val.float_val * $3.val.float_val;
+                                                            $$.val.float_val = $1.val.float_val - $3.val.float_val;
                                                         } 
                                                     }
                 | operatorExp T_mod operatorExp     {
@@ -405,12 +406,102 @@ assignmentExp   : T_id T_asop conditionalExp    {
                                                     yylval.tab_arr[i].tok_name = "float";
                                                 }
                                             }*/
-            | T_id T_addas expression 
-            | T_id T_subas expression 
-            | T_id T_mulas expression
-            | T_id T_divas expression
-            | T_id T_modas expression
-            | T_id T_expas expression
+            | T_id T_addas term             {
+                                                int i = check_symtable($1);
+                                                if(yylval.tab_arr[i].uni_val_flag == 0 && $3.uni_val_flag == 0)   
+                                                        {
+                                                            yylval.tab_arr[i].uni_val_flag = 0;
+                                                            yylval.tab_arr[i].val.int_val = yylval.tab_arr[i].val.int_val + $3.val.int_val;
+                                                        }
+                                                        else if(yylval.tab_arr[i].uni_val_flag == 0 && $3.uni_val_flag == 1)   
+                                                        {
+                                                            yylval.tab_arr[i].uni_val_flag = 1;
+                                                            yylval.tab_arr[i].val.float_val = $3.val.float_val + yylval.tab_arr[i].val.int_val ;
+                                                        }
+                                                        else if(yylval.tab_arr[i].uni_val_flag == 1 && $3.uni_val_flag == 0)   
+                                                        {
+                                                            yylval.tab_arr[i].uni_val_flag = 1;
+                                                            yylval.tab_arr[i].val.float_val = yylval.tab_arr[i].val.float_val + $3.val.int_val;
+                                                        }
+                                                        else if(yylval.tab_arr[i].uni_val_flag == 1 && $3.uni_val_flag == 1)   
+                                                        {
+                                                            yylval.tab_arr[i].uni_val_flag = 1;
+                                                            yylval.tab_arr[i].val.float_val = yylval.tab_arr[i].val.float_val + $3.val.float_val;
+                                                        }
+                                            }
+            | T_id T_subas term            {
+                                                int i = check_symtable($1);
+                                                if(yylval.tab_arr[i].uni_val_flag == 0 && $3.uni_val_flag == 0)   
+                                                        {
+                                                            yylval.tab_arr[i].uni_val_flag = 0;
+                                                            yylval.tab_arr[i].val.int_val = yylval.tab_arr[i].val.int_val - $3.val.int_val;
+                                                        }
+                                                        else if(yylval.tab_arr[i].uni_val_flag == 0 && $3.uni_val_flag == 1)   
+                                                        {
+                                                            yylval.tab_arr[i].uni_val_flag = 1;
+                                                            yylval.tab_arr[i].val.float_val = $3.val.float_val - yylval.tab_arr[i].val.int_val ;
+                                                        }
+                                                        else if(yylval.tab_arr[i].uni_val_flag == 1 && $3.uni_val_flag == 0)   
+                                                        {
+                                                            yylval.tab_arr[i].uni_val_flag = 1;
+                                                            yylval.tab_arr[i].val.float_val = yylval.tab_arr[i].val.float_val - $3.val.int_val;
+                                                        }
+                                                        else if(yylval.tab_arr[i].uni_val_flag == 1 && $3.uni_val_flag == 1)   
+                                                        {
+                                                            yylval.tab_arr[i].uni_val_flag = 1;
+                                                            yylval.tab_arr[i].val.float_val = yylval.tab_arr[i].val.float_val - $3.val.float_val;
+                                                        }
+                                            }
+            | T_id T_mulas term            {
+                                                int i = check_symtable($1);
+                                                if(yylval.tab_arr[i].uni_val_flag == 0 && $3.uni_val_flag == 0)   
+                                                    {
+                                                        yylval.tab_arr[i].uni_val_flag = 0;
+                                                        yylval.tab_arr[i].val.int_val = yylval.tab_arr[i].val.int_val * $3.val.int_val;
+                                                    }
+                                                    else if(yylval.tab_arr[i].uni_val_flag == 0 && $3.uni_val_flag == 1)   
+                                                    {
+                                                        yylval.tab_arr[i].uni_val_flag = 1;
+                                                        yylval.tab_arr[i].val.float_val = yylval.tab_arr[i].val.int_val * $3.val.float_val;
+                                                    }
+                                                    else if(yylval.tab_arr[i].uni_val_flag == 1 && $3.uni_val_flag == 0)   
+                                                    {
+                                                        yylval.tab_arr[i].uni_val_flag = 1;
+                                                        yylval.tab_arr[i].val.float_val = yylval.tab_arr[i].val.float_val * $3.val.int_val;
+                                                    }
+                                                    else if(yylval.tab_arr[i].uni_val_flag == 1 && $3.uni_val_flag == 1)   
+                                                    {
+                                                        yylval.tab_arr[i].uni_val_flag = 1;
+                                                        yylval.tab_arr[i].val.float_val = yylval.tab_arr[i].val.float_val * $3.val.float_val;
+                                                    }
+                                            }
+            | T_id T_divas term            {
+                                                int i = check_symtable($1);
+                                                if($3.uni_val_flag == 0 && $3.val.int_val == 0 || $3.uni_val_flag == 1 && $3.val.float_val == 0.0)
+                                                {
+													yyerror("Divide by Zero");
+                                                }
+											    else if(yylval.tab_arr[i].uni_val_flag == 0 && $3.uni_val_flag == 0)   
+                                                {
+                                                    yylval.tab_arr[i].uni_val_flag = 1;
+                                                    yylval.tab_arr[i].val.float_val = (float) yylval.tab_arr[i].val.int_val / (float) $3.val.int_val;
+                                                }
+                                                else if(yylval.tab_arr[i].uni_val_flag == 0 && $3.uni_val_flag == 1)   
+                                                {
+                                                    yylval.tab_arr[i].uni_val_flag = 1;
+                                                    yylval.tab_arr[i].val.float_val = yylval.tab_arr[i].val.int_val / $3.val.float_val;
+                                                }
+                                                else if(yylval.tab_arr[i].uni_val_flag == 1 && $3.uni_val_flag == 0)   
+                                                {
+                                                    yylval.tab_arr[i].uni_val_flag = 1;
+                                                    yylval.tab_arr[i].val.float_val = yylval.tab_arr[i].val.float_val / $3.val.int_val;
+                                                }
+                                                else if(yylval.tab_arr[i].uni_val_flag == 1 && $3.uni_val_flag == 1)   
+                                                {
+                                                    yylval.tab_arr[i].uni_val_flag = 1;
+                                                    yylval.tab_arr[i].val.float_val = yylval.tab_arr[i].val.float_val / $3.val.float_val;
+                                                }
+                                            }
             ;
 
 
