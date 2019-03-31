@@ -67,15 +67,22 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
-#define YYDEBUG 1
+#define YYDEBUG 0
+
 void yyerror(char *s);
 int yylex();
 int yylineno;
+/* Symbol Table functions */
 void print_symtable();
 extern int check_symtable(char *text);
 extern void putvar_symtable(int ind, char *scope, int line_no, char *tok_val);
+/* AST functions */
+/*struct node *init_tree();
+struct node *make_node(char *tk_value, struct node *left_value, struct node *right_value);
+void print_node(struct node *root); */
 
-#line 79 "y.tab.c" /* yacc.c:339  */
+
+#line 86 "y.tab.c" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -114,47 +121,51 @@ extern int yydebug;
     T_flt = 259,
     T_id = 260,
     T_string = 261,
-    T_ARITH_OP = 262,
-    T_REL_OP_SING = 263,
-    T_puts = 264,
-    T_do = 265,
-    T_end = 266,
-    T_begin = 267,
-    T_when = 268,
-    T_case = 269,
-    T_while = 270,
-    T_else = 271,
-    T_return = 272,
-    T_def = 273,
-    T_class = 274,
-    T_openpar = 275,
-    T_closepar = 276,
-    T_opencurly = 277,
-    T_closecurly = 278,
-    T_openbox = 279,
-    T_closebox = 280,
-    T_asop = 281,
-    T_exp = 282,
-    T_comp = 283,
-    T_gte = 284,
-    T_lte = 285,
-    T_ne = 286,
-    T_ccomp = 287,
-    T_scomp = 288,
-    T_expas = 289,
-    T_addas = 290,
-    T_subas = 291,
-    T_mulas = 292,
-    T_divas = 293,
-    T_modas = 294,
-    T_and = 295,
-    T_or = 296,
-    T_not = 297,
-    T_comma = 298,
-    T_true = 299,
-    T_false = 300,
-    T_inrange = 301,
-    T_exrange = 302
+    T_puts = 262,
+    T_do = 263,
+    T_end = 264,
+    T_begin = 265,
+    T_when = 266,
+    T_case = 267,
+    T_while = 268,
+    T_else = 269,
+    T_return = 270,
+    T_def = 271,
+    T_class = 272,
+    T_plus = 273,
+    T_minus = 274,
+    T_mul = 275,
+    T_div = 276,
+    T_mod = 277,
+    T_openpar = 278,
+    T_closepar = 279,
+    T_opencurly = 280,
+    T_closecurly = 281,
+    T_openbox = 282,
+    T_closebox = 283,
+    T_asop = 284,
+    T_exp = 285,
+    T_comp = 286,
+    T_gt = 287,
+    T_lt = 288,
+    T_gte = 289,
+    T_lte = 290,
+    T_ne = 291,
+    T_ccomp = 292,
+    T_expas = 293,
+    T_addas = 294,
+    T_subas = 295,
+    T_mulas = 296,
+    T_divas = 297,
+    T_modas = 298,
+    T_and = 299,
+    T_or = 300,
+    T_not = 301,
+    T_comma = 302,
+    T_true = 303,
+    T_false = 304,
+    T_inrange = 305,
+    T_exrange = 306
   };
 #endif
 /* Tokens.  */
@@ -162,80 +173,97 @@ extern int yydebug;
 #define T_flt 259
 #define T_id 260
 #define T_string 261
-#define T_ARITH_OP 262
-#define T_REL_OP_SING 263
-#define T_puts 264
-#define T_do 265
-#define T_end 266
-#define T_begin 267
-#define T_when 268
-#define T_case 269
-#define T_while 270
-#define T_else 271
-#define T_return 272
-#define T_def 273
-#define T_class 274
-#define T_openpar 275
-#define T_closepar 276
-#define T_opencurly 277
-#define T_closecurly 278
-#define T_openbox 279
-#define T_closebox 280
-#define T_asop 281
-#define T_exp 282
-#define T_comp 283
-#define T_gte 284
-#define T_lte 285
-#define T_ne 286
-#define T_ccomp 287
-#define T_scomp 288
-#define T_expas 289
-#define T_addas 290
-#define T_subas 291
-#define T_mulas 292
-#define T_divas 293
-#define T_modas 294
-#define T_and 295
-#define T_or 296
-#define T_not 297
-#define T_comma 298
-#define T_true 299
-#define T_false 300
-#define T_inrange 301
-#define T_exrange 302
+#define T_puts 262
+#define T_do 263
+#define T_end 264
+#define T_begin 265
+#define T_when 266
+#define T_case 267
+#define T_while 268
+#define T_else 269
+#define T_return 270
+#define T_def 271
+#define T_class 272
+#define T_plus 273
+#define T_minus 274
+#define T_mul 275
+#define T_div 276
+#define T_mod 277
+#define T_openpar 278
+#define T_closepar 279
+#define T_opencurly 280
+#define T_closecurly 281
+#define T_openbox 282
+#define T_closebox 283
+#define T_asop 284
+#define T_exp 285
+#define T_comp 286
+#define T_gt 287
+#define T_lt 288
+#define T_gte 289
+#define T_lte 290
+#define T_ne 291
+#define T_ccomp 292
+#define T_expas 293
+#define T_addas 294
+#define T_subas 295
+#define T_mulas 296
+#define T_divas 297
+#define T_modas 298
+#define T_and 299
+#define T_or 300
+#define T_not 301
+#define T_comma 302
+#define T_true 303
+#define T_false 304
+#define T_inrange 305
+#define T_exrange 306
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 
 union YYSTYPE
 {
-#line 17 "ruby2.y" /* yacc.c:355  */
+#line 24 "ruby2.y" /* yacc.c:355  */
 
     char *id;
     char* array;
     int intval;
     char *str;
     float floatval;
-    int boo;
+    char* boolval;
     int arithop;
     int relop;
     int asop;
+
     struct table{
         char *tok_name;
         char *tok_val;
         char *scope;
         int line_no;
-        int int_val;
-        float float_val;
-        int bool_val;
-        char* str;
-        char* array;
+        int uni_val_flag;
+        union value
+        {
+            int int_val;
+            float float_val;
+            char* bool_val;
+            char* str;
+            char* array;
+        }val;
         int occurences;
     }table;
 
     struct table tab_arr[20];
 
-#line 239 "y.tab.c" /* yacc.c:355  */
+    /*struct node{
+        char *token_value;
+        struct node *left;
+        struct node *right;
+    }node;*/
+
+
+
+#line 267 "y.tab.c" /* yacc.c:355  */
 };
 
 typedef union YYSTYPE YYSTYPE;
@@ -266,7 +294,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 270 "y.tab.c" /* yacc.c:358  */
+#line 298 "y.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -508,23 +536,23 @@ union yyalloc
 #endif /* !YYCOPY_NEEDED */
 
 /* YYFINAL -- State number of the termination state.  */
-#define YYFINAL  50
+#define YYFINAL  46
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   163
+#define YYLAST   162
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  53
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  31
+#define YYNNTS  28
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  75
+#define YYNRULES  73
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  129
+#define YYNSTATES  130
 
 /* YYTRANSLATE[YYX] -- Symbol number corresponding to YYX as returned
    by yylex, with out-of-bounds checking.  */
 #define YYUNDEFTOK  2
-#define YYMAXUTOK   302
+#define YYMAXUTOK   306
 
 #define YYTRANSLATE(YYX)                                                \
   ((unsigned int) (YYX) <= YYMAXUTOK ? yytranslate[YYX] : YYUNDEFTOK)
@@ -537,7 +565,7 @@ static const yytype_uint8 yytranslate[] =
       52,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,    50,    49,     2,    48,     2,    51,     2,     2,
+       2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
@@ -563,21 +591,21 @@ static const yytype_uint8 yytranslate[] =
       15,    16,    17,    18,    19,    20,    21,    22,    23,    24,
       25,    26,    27,    28,    29,    30,    31,    32,    33,    34,
       35,    36,    37,    38,    39,    40,    41,    42,    43,    44,
-      45,    46,    47
+      45,    46,    47,    48,    49,    50,    51
 };
 
 #if YYDEBUG
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,   107,   107,   108,   109,   110,   111,   114,   115,   118,
-     119,   127,   128,   130,   133,   134,   137,   138,   141,   142,
-     145,   147,   148,   151,   152,   155,   156,   159,   163,   168,
-     172,   173,   174,   175,   176,   177,   181,   182,   185,   186,
-     187,   188,   189,   190,   193,   194,   195,   196,   197,   198,
-     201,   201,   202,   203,   204,   206,   213,   214,   217,   218,
-     224,   227,   230,   233,   234,   235,   238,   239,   244,   247,
-     250,   251,   256,   259,   262,   263
+       0,   144,   144,   145,   146,   147,   148,   151,   154,   176,
+     202,   225,   247,   251,   262,   265,   276,   287,   298,   309,
+     320,   331,   345,   347,   348,   351,   352,   355,   356,   359,
+     380,   387,   408,   409,   410,   411,   412,   413,   417,   434,
+     440,   446,   453,   454,   455,   456,   457,   458,   461,   461,
+     462,   468,   480,   488,   506,   507,   510,   511,   517,   520,
+     523,   526,   527,   528,   531,   532,   537,   540,   543,   544,
+     549,   552,   555,   556
 };
 #endif
 
@@ -587,19 +615,19 @@ static const yytype_uint16 yyrline[] =
 static const char *const yytname[] =
 {
   "$end", "error", "$undefined", "T_int", "T_flt", "T_id", "T_string",
-  "T_ARITH_OP", "T_REL_OP_SING", "T_puts", "T_do", "T_end", "T_begin",
-  "T_when", "T_case", "T_while", "T_else", "T_return", "T_def", "T_class",
-  "T_openpar", "T_closepar", "T_opencurly", "T_closecurly", "T_openbox",
-  "T_closebox", "T_asop", "T_exp", "T_comp", "T_gte", "T_lte", "T_ne",
-  "T_ccomp", "T_scomp", "T_expas", "T_addas", "T_subas", "T_mulas",
-  "T_divas", "T_modas", "T_and", "T_or", "T_not", "T_comma", "T_true",
-  "T_false", "T_inrange", "T_exrange", "'-'", "'+'", "'*'", "'/'", "'\\n'",
-  "$accept", "line", "expression", "operatorExp", "relationalExp",
-  "booleanExp", "boolExp2", "arrayExp", "numList", "intList", "fltList",
-  "assignmentExp", "conditionalExp", "relDbl", "statement", "term",
-  "term1", "term2", "iterStat", "whileExp", "selStat", "whenStat",
-  "whenExp", "whenOptional", "whenExpOpt", "functionStat", "funcExp",
-  "funcExp2", "classStat", "classExp", "classExp2", YY_NULLPTR
+  "T_puts", "T_do", "T_end", "T_begin", "T_when", "T_case", "T_while",
+  "T_else", "T_return", "T_def", "T_class", "T_plus", "T_minus", "T_mul",
+  "T_div", "T_mod", "T_openpar", "T_closepar", "T_opencurly",
+  "T_closecurly", "T_openbox", "T_closebox", "T_asop", "T_exp", "T_comp",
+  "T_gt", "T_lt", "T_gte", "T_lte", "T_ne", "T_ccomp", "T_expas",
+  "T_addas", "T_subas", "T_mulas", "T_divas", "T_modas", "T_and", "T_or",
+  "T_not", "T_comma", "T_true", "T_false", "T_inrange", "T_exrange",
+  "'\\n'", "$accept", "line", "expression", "operatorExp", "relationalExp",
+  "arrayExp", "numList", "intList", "fltList", "assignmentExp",
+  "conditionalExp", "statement", "term", "term1", "term2", "iterStat",
+  "whileExp", "selStat", "whenStat", "whenExp", "whenOptional",
+  "whenExpOpt", "functionStat", "funcExp", "funcExp2", "classStat",
+  "classExp", "classExp2", YY_NULLPTR
 };
 #endif
 
@@ -612,15 +640,15 @@ static const yytype_uint16 yytoknum[] =
      265,   266,   267,   268,   269,   270,   271,   272,   273,   274,
      275,   276,   277,   278,   279,   280,   281,   282,   283,   284,
      285,   286,   287,   288,   289,   290,   291,   292,   293,   294,
-     295,   296,   297,   298,   299,   300,   301,   302,    45,    43,
-      42,    47,    10
+     295,   296,   297,   298,   299,   300,   301,   302,   303,   304,
+     305,   306,    10
 };
 # endif
 
-#define YYPACT_NINF -109
+#define YYPACT_NINF -99
 
 #define yypact_value_is_default(Yystate) \
-  (!!((Yystate) == (-109)))
+  (!!((Yystate) == (-99)))
 
 #define YYTABLE_NINF -1
 
@@ -631,19 +659,19 @@ static const yytype_uint16 yytoknum[] =
      STATE-NUM.  */
 static const yytype_int16 yypact[] =
 {
-      68,   -42,  -109,  -109,   124,   137,    10,    13,   133,    14,
-      16,   133,   133,    24,  -109,    27,   -15,  -109,  -109,  -109,
-      96,  -109,  -109,  -109,  -109,  -109,  -109,  -109,    87,    13,
-      13,    13,    13,    13,    13,   124,   137,    12,    17,  -109,
-     -15,  -109,    30,    96,  -109,    25,   137,    49,  -109,  -109,
-    -109,  -109,  -109,   133,   133,   133,   133,   133,   133,  -109,
-     133,  -109,  -109,  -109,  -109,  -109,  -109,   133,  -109,    28,
-      27,  -109,  -109,  -109,  -109,  -109,  -109,  -109,  -109,    41,
-     133,    46,   137,    53,   137,    56,  -109,   -16,   -16,  -109,
-    -109,  -109,  -109,  -109,  -109,    36,    38,    43,  -109,  -109,
-      13,   137,  -109,    78,    74,  -109,  -109,  -109,   100,   102,
-    -109,  -109,   137,    -5,  -109,   137,  -109,  -109,  -109,  -109,
-     137,  -109,  -109,   137,    94,  -109,  -109,  -109,  -109
+      25,   -34,   -99,   -99,    94,   133,    19,    55,    85,    31,
+      34,    85,    55,     4,   -99,    78,   120,   -99,   -33,   -99,
+     -99,   -99,   -99,   -99,   -99,   -99,   -99,   -99,    41,    55,
+      55,    55,    55,    55,    55,    94,   133,    24,    38,   -99,
+      17,   -99,    40,   133,   107,   -33,   -99,   -99,   -99,    85,
+      85,    85,    85,    85,    85,    85,    85,    85,    85,    85,
+      85,    55,    55,   -99,    28,   -99,   -33,   -99,   -99,   -99,
+     -99,   -99,   -99,   -99,    44,    85,    57,   133,    62,   133,
+      71,   -99,    32,    32,    54,    54,    54,   -99,   -99,    75,
+      75,   -99,   -99,   -99,    47,   -99,    46,    56,    66,   -99,
+     -99,    55,   133,   -99,    95,    81,   -99,   -99,   -99,   104,
+     108,   -99,   -33,   133,    -9,   -99,   133,   -99,   -99,   -99,
+     -99,   133,   -99,   -99,   133,   105,   -99,   -99,   -99,   -99
 };
 
   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -651,37 +679,35 @@ static const yytype_int16 yypact[] =
      means the default is an error.  */
 static const yytype_uint8 yydefact[] =
 {
-       0,     0,    52,    53,    55,    59,     0,     0,     0,     0,
-       0,     0,     0,     0,     2,     8,     0,     7,    47,     4,
-      13,    50,    51,    45,    46,    48,    49,     6,     0,     0,
-       0,     0,     0,     0,     0,     0,    59,     0,     0,    55,
-      36,    37,     0,     0,    44,     0,     0,     0,    13,    17,
-       1,     3,     5,     0,     0,     0,     0,     0,     0,    16,
-       0,    38,    39,    40,    41,    42,    43,     0,    29,     0,
-      27,    28,    35,    30,    31,    32,    33,    34,    58,     0,
-       0,     0,    59,     0,    75,     0,    54,    12,    11,     9,
-      10,    18,    19,    14,    15,    24,    26,     0,    21,    22,
-       0,     0,    60,     0,     0,    74,    73,    72,     0,     0,
-      20,    57,    67,    65,    56,     0,    23,    25,    66,    62,
-       0,    64,    61,    71,     0,    63,    70,    69,    68
+       0,     0,    50,    52,    53,    57,     0,     0,     0,     0,
+       0,     0,     0,     0,     2,    21,    38,    45,     7,     4,
+      14,    48,    49,    43,    44,    46,    47,     6,     0,     0,
+       0,     0,     0,     0,     0,     0,    57,     0,     0,    53,
+       0,    42,     0,     0,     0,    41,     1,     3,     5,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,    31,     0,    30,    29,    37,    32,    33,
+      34,    35,    36,    56,     0,     0,     0,    57,     0,    73,
+       0,    51,    10,    11,     8,     9,    12,    13,    19,    16,
+      15,    18,    17,    20,    39,    40,    26,    28,     0,    23,
+      24,     0,     0,    58,     0,     0,    72,    71,    70,     0,
+       0,    22,    55,    65,    63,    54,     0,    25,    27,    64,
+      60,     0,    62,    59,    69,     0,    61,    68,    67,    66
 };
 
   /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-    -109,  -109,   101,     9,     2,    -4,  -109,  -109,  -109,     1,
-      -1,  -109,    18,  -109,     0,    -6,  -109,  -109,  -109,   -29,
-    -109,     3,  -108,  -109,  -109,  -109,   -10,  -109,  -109,    33,
-    -109
+     -99,   -99,    52,    23,   102,   -99,   -99,     8,     9,   -99,
+      -6,     0,    -5,   -99,   -99,   -99,   -26,   -99,     6,   -98,
+     -99,   -99,   -99,    -2,   -99,   -99,    39,   -99
 };
 
   /* YYDEFGOTO[NTERM-NUM].  */
-static const yytype_int8 yydefgoto[] =
+static const yytype_int16 yydefgoto[] =
 {
-      -1,    13,    14,    15,    16,    17,    59,    71,    97,    98,
-      99,    18,    42,    67,    36,    20,    21,    22,    23,    37,
-      24,    81,   113,   122,   119,    25,   124,   127,    26,    85,
-     106
+      -1,    13,    14,    15,    16,    65,    98,    99,   100,    17,
+      18,    36,    20,    21,    22,    23,    37,    24,    76,   114,
+     123,   120,    25,   125,   128,    26,    80,   107
 };
 
   /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -689,89 +715,89 @@ static const yytype_int8 yydefgoto[] =
      number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_uint8 yytable[] =
 {
-      19,    43,    44,    41,   118,    48,    43,    78,    80,    40,
-      27,   120,   125,    52,    49,    38,     2,     3,    39,    45,
-      47,    46,    48,    79,    50,    57,    58,     2,     3,     4,
-      80,    95,    96,    11,    55,    56,     5,    70,     6,     7,
-      82,     8,     9,    10,    11,    83,    84,    48,    48,    48,
-      48,    43,    43,   103,    93,    12,   100,   102,   104,    91,
-      92,    94,    87,    88,    89,    90,    12,   107,   110,     1,
-      86,     2,     3,     4,   101,    53,    54,    55,    56,   108,
-       5,   109,     6,     7,    84,     8,     9,    10,    11,   114,
-       2,     3,    39,    68,    43,   115,    41,    53,    54,    55,
-      56,   112,    40,    95,    60,   128,    96,    11,   117,   116,
-      12,    69,   112,   126,    51,   123,   121,   105,   111,     0,
-     112,     0,     0,   123,    61,    62,    63,    64,    65,    66,
-      72,    73,    74,    75,    76,    77,     2,     3,    39,     0,
-       0,     0,    35,     0,     0,     0,     0,     0,     0,     5,
-      28,     6,     7,    11,     8,     9,    10,     0,    29,    30,
-      31,    32,    33,    34
+      19,    40,    75,    41,    46,   121,    45,     2,     3,     4,
+      73,    61,    62,    48,     5,   119,     6,     7,    27,     8,
+       9,    10,    66,   126,    38,    77,     1,    11,     2,     3,
+       4,    96,    97,    74,    44,     5,    42,     6,     7,    43,
+       8,     9,    10,    79,     2,     3,    39,    63,    11,    75,
+      12,   104,    51,    52,    53,    94,    95,   101,     2,     3,
+      39,    61,    62,    78,    11,    47,   103,   105,    64,    54,
+     102,    12,    82,    83,    84,    85,    86,    87,    11,    79,
+     108,    67,    68,    69,    70,    71,    72,    12,     2,     3,
+      39,    54,    62,   109,   111,   112,    49,    50,    51,    52,
+      53,    12,   113,   110,   115,   116,    55,    96,    11,    58,
+      59,    60,    97,   113,   129,    54,   124,   117,   106,   118,
+     122,   113,   127,    28,   124,    49,    50,    51,    52,    53,
+       0,    81,    29,    30,    31,    32,    33,    34,    35,     0,
+       0,     0,     0,     5,    54,     6,     7,     0,     8,     9,
+      10,    55,    56,    57,    58,    59,    60,    88,    89,    90,
+      91,    92,    93
 };
 
 static const yytype_int8 yycheck[] =
 {
-       0,     7,     8,     7,   112,    11,    12,    36,    13,     7,
-      52,    16,   120,    13,    12,     5,     3,     4,     5,     5,
-      11,     5,    28,    11,     0,    40,    41,     3,     4,     5,
-      13,     3,     4,    20,    50,    51,    12,    28,    14,    15,
-      10,    17,    18,    19,    20,    20,    46,    53,    54,    55,
-      56,    57,    58,    82,    60,    42,    15,    11,     5,    57,
-      58,    67,    53,    54,    55,    56,    42,    11,    25,     1,
-      21,     3,     4,     5,    80,    48,    49,    50,    51,    43,
-      12,    43,    14,    15,    84,    17,    18,    19,    20,    11,
-       3,     4,     5,     6,   100,    21,   100,    48,    49,    50,
-      51,   101,   100,     3,     8,    11,     4,    20,   109,   108,
-      42,    24,   112,   123,    13,   115,   113,    84,   100,    -1,
-     120,    -1,    -1,   123,    28,    29,    30,    31,    32,    33,
-      29,    30,    31,    32,    33,    34,     3,     4,     5,    -1,
-      -1,    -1,     5,    -1,    -1,    -1,    -1,    -1,    -1,    12,
-      26,    14,    15,    20,    17,    18,    19,    -1,    34,    35,
-      36,    37,    38,    39
+       0,     7,    11,     8,     0,    14,    12,     3,     4,     5,
+      36,    44,    45,    13,    10,   113,    12,    13,    52,    15,
+      16,    17,    28,   121,     5,     8,     1,    23,     3,     4,
+       5,     3,     4,     9,    11,    10,     5,    12,    13,     5,
+      15,    16,    17,    43,     3,     4,     5,     6,    23,    11,
+      46,    77,    20,    21,    22,    61,    62,    13,     3,     4,
+       5,    44,    45,    23,    23,    13,     9,     5,    27,    37,
+      75,    46,    49,    50,    51,    52,    53,    54,    23,    79,
+       9,    29,    30,    31,    32,    33,    34,    46,     3,     4,
+       5,    37,    45,    47,    28,   101,    18,    19,    20,    21,
+      22,    46,   102,    47,     9,    24,    31,     3,    23,    34,
+      35,    36,     4,   113,     9,    37,   116,   109,    79,   110,
+     114,   121,   124,    29,   124,    18,    19,    20,    21,    22,
+      -1,    24,    38,    39,    40,    41,    42,    43,     5,    -1,
+      -1,    -1,    -1,    10,    37,    12,    13,    -1,    15,    16,
+      17,    31,    32,    33,    34,    35,    36,    55,    56,    57,
+      58,    59,    60
 };
 
   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
      symbol of state STATE-NUM.  */
 static const yytype_uint8 yystos[] =
 {
-       0,     1,     3,     4,     5,    12,    14,    15,    17,    18,
-      19,    20,    42,    54,    55,    56,    57,    58,    64,    67,
-      68,    69,    70,    71,    73,    78,    81,    52,    26,    34,
-      35,    36,    37,    38,    39,     5,    67,    72,     5,     5,
-      57,    58,    65,    68,    68,     5,     5,    56,    68,    57,
-       0,    55,    67,    48,    49,    50,    51,    40,    41,    59,
-       8,    28,    29,    30,    31,    32,    33,    66,     6,    24,
-      56,    60,    55,    55,    55,    55,    55,    55,    72,    11,
-      13,    74,    10,    20,    67,    82,    21,    56,    56,    56,
-      56,    57,    57,    68,    68,     3,     4,    61,    62,    63,
-      15,    68,    11,    72,     5,    82,    83,    11,    43,    43,
-      25,    65,    67,    75,    11,    21,    62,    63,    75,    77,
-      16,    74,    76,    67,    79,    75,    79,    80,    11
+       0,     1,     3,     4,     5,    10,    12,    13,    15,    16,
+      17,    23,    46,    54,    55,    56,    57,    62,    63,    64,
+      65,    66,    67,    68,    70,    75,    78,    52,    29,    38,
+      39,    40,    41,    42,    43,     5,    64,    69,     5,     5,
+      63,    65,     5,     5,    56,    63,     0,    55,    64,    18,
+      19,    20,    21,    22,    37,    31,    32,    33,    34,    35,
+      36,    44,    45,     6,    27,    58,    63,    55,    55,    55,
+      55,    55,    55,    69,     9,    11,    71,     8,    23,    64,
+      79,    24,    56,    56,    56,    56,    56,    56,    57,    57,
+      57,    57,    57,    57,    63,    63,     3,     4,    59,    60,
+      61,    13,    65,     9,    69,     5,    79,    80,     9,    47,
+      47,    28,    63,    64,    72,     9,    24,    60,    61,    72,
+      74,    14,    71,    73,    64,    76,    72,    76,    77,     9
 };
 
   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_uint8 yyr1[] =
 {
-       0,    53,    54,    54,    54,    54,    54,    55,    55,    56,
-      56,    56,    56,    56,    57,    57,    58,    58,    59,    59,
-      60,    61,    61,    62,    62,    63,    63,    64,    64,    64,
-      64,    64,    64,    64,    64,    64,    65,    65,    66,    66,
-      66,    66,    66,    66,    67,    67,    67,    67,    67,    67,
-      68,    68,    69,    69,    69,    70,    71,    71,    72,    72,
-      73,    74,    75,    76,    76,    76,    77,    77,    78,    79,
-      80,    80,    81,    82,    83,    83
+       0,    53,    54,    54,    54,    54,    54,    55,    56,    56,
+      56,    56,    56,    56,    56,    57,    57,    57,    57,    57,
+      57,    57,    58,    59,    59,    60,    60,    61,    61,    62,
+      62,    62,    62,    62,    62,    62,    62,    62,    63,    63,
+      63,    63,    64,    64,    64,    64,    64,    64,    65,    65,
+      66,    66,    66,    67,    68,    68,    69,    69,    70,    71,
+      72,    73,    73,    73,    74,    74,    75,    76,    77,    77,
+      78,    79,    80,    80
 };
 
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
 static const yytype_uint8 yyr2[] =
 {
-       0,     2,     1,     2,     1,     2,     2,     1,     1,     3,
-       3,     3,     3,     1,     3,     3,     2,     2,     2,     2,
-       3,     1,     1,     3,     1,     3,     1,     3,     3,     3,
-       3,     3,     3,     3,     3,     3,     1,     1,     1,     1,
-       1,     1,     1,     1,     2,     1,     1,     1,     1,     1,
-       1,     1,     1,     1,     3,     1,     5,     5,     2,     0,
-       4,     4,     2,     2,     1,     0,     1,     0,     7,     2,
-       1,     0,     4,     2,     1,     0
+       0,     2,     1,     2,     1,     2,     2,     1,     3,     3,
+       3,     3,     3,     3,     1,     3,     3,     3,     3,     3,
+       3,     1,     3,     1,     1,     3,     1,     3,     1,     3,
+       3,     3,     3,     3,     3,     3,     3,     3,     1,     3,
+       3,     2,     2,     1,     1,     1,     1,     1,     1,     1,
+       1,     3,     1,     1,     5,     5,     2,     0,     4,     4,
+       2,     2,     1,     0,     1,     0,     7,     2,     1,     0,
+       4,     2,     1,     0
 };
 
 
@@ -1540,81 +1566,425 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
-        case 9:
-#line 118 "ruby2.y" /* yacc.c:1646  */
-    {(yyval.intval)=(yyvsp[-2].intval)*(yyvsp[0].intval);}
-#line 1547 "y.tab.c" /* yacc.c:1646  */
+        case 8:
+#line 154 "ruby2.y" /* yacc.c:1646  */
+    {
+                                                    if((yyvsp[-2].table).uni_val_flag == 0 && (yyvsp[0].table).uni_val_flag == 0)   
+                                                    {
+                                                        (yyval.table).uni_val_flag = 0;
+                                                        (yyval.table).val.int_val = (yyvsp[-2].table).val.int_val * (yyvsp[0].table).val.int_val;
+                                                    }
+                                                    else if((yyvsp[-2].table).uni_val_flag == 0 && (yyvsp[0].table).uni_val_flag == 1)   
+                                                    {
+                                                        (yyval.table).uni_val_flag = 1;
+                                                        (yyval.table).val.float_val = (yyvsp[-2].table).val.int_val * (yyvsp[0].table).val.float_val;
+                                                    }
+                                                    else if((yyvsp[-2].table).uni_val_flag == 1 && (yyvsp[0].table).uni_val_flag == 0)   
+                                                    {
+                                                        (yyval.table).uni_val_flag = 1;
+                                                        (yyval.table).val.float_val = (yyvsp[-2].table).val.float_val * (yyvsp[0].table).val.int_val;
+                                                    }
+                                                    else if((yyvsp[-2].table).uni_val_flag == 1 && (yyvsp[0].table).uni_val_flag == 1)   
+                                                    {
+                                                        (yyval.table).uni_val_flag = 1;
+                                                        (yyval.table).val.float_val = (yyvsp[-2].table).val.float_val * (yyvsp[0].table).val.float_val;
+                                                    }            
+                                                }
+#line 1594 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 10:
-#line 119 "ruby2.y" /* yacc.c:1646  */
+  case 9:
+#line 176 "ruby2.y" /* yacc.c:1646  */
     {
-                                                if((yyvsp[0].intval)==0)
+                                                if((yyvsp[0].table).uni_val_flag == 0 && (yyvsp[0].table).val.int_val == 0 || (yyvsp[0].table).uni_val_flag == 1 && (yyvsp[0].table).val.float_val == 0.0)
                                                 {
 													yyerror("Divide by Zero");
                                                 }
-											    else
-													(yyval.intval)=(yyvsp[-2].intval)/(yyvsp[0].intval);
+											    else if((yyvsp[-2].table).uni_val_flag == 0 && (yyvsp[0].table).uni_val_flag == 0)   
+                                                {
+                                                    (yyval.table).uni_val_flag = 0;
+                                                    (yyval.table).val.int_val = (yyvsp[-2].table).val.int_val / (yyvsp[0].table).val.int_val;
+                                                }
+                                                else if((yyvsp[-2].table).uni_val_flag == 0 && (yyvsp[0].table).uni_val_flag == 1)   
+                                                {
+                                                    (yyval.table).uni_val_flag = 1;
+                                                    (yyval.table).val.float_val = (yyvsp[-2].table).val.int_val / (yyvsp[0].table).val.float_val;
+                                                }
+                                                else if((yyvsp[-2].table).uni_val_flag == 1 && (yyvsp[0].table).uni_val_flag == 0)   
+                                                {
+                                                    (yyval.table).uni_val_flag = 1;
+                                                    (yyval.table).val.float_val = (yyvsp[-2].table).val.float_val / (yyvsp[0].table).val.int_val;
+                                                }
+                                                else if((yyvsp[-2].table).uni_val_flag == 1 && (yyvsp[0].table).uni_val_flag == 1)   
+                                                {
+                                                    (yyval.table).uni_val_flag = 1;
+                                                    (yyval.table).val.float_val = (yyvsp[-2].table).val.float_val / (yyvsp[0].table).val.float_val;
+                                                }  
 											}
-#line 1560 "y.tab.c" /* yacc.c:1646  */
+#line 1625 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 10:
+#line 202 "ruby2.y" /* yacc.c:1646  */
+    {  /*$$ = make_node("+",$1,$3);*/
+                                                        if((yyvsp[-2].table).uni_val_flag == 0 && (yyvsp[0].table).uni_val_flag == 0)   
+                                                        {
+                                                            (yyval.table).uni_val_flag = 0;
+                                                            (yyval.table).val.int_val = (yyvsp[-2].table).val.int_val + (yyvsp[0].table).val.int_val;
+                                                        }
+                                                        else if((yyvsp[-2].table).uni_val_flag == 0 && (yyvsp[0].table).uni_val_flag == 1)   
+                                                        {
+                                                            (yyval.table).uni_val_flag = 1;
+                                                            (yyval.table).val.float_val = (yyvsp[0].table).val.float_val + (yyvsp[-2].table).val.int_val ;
+                                                        }
+                                                        else if((yyvsp[-2].table).uni_val_flag == 1 && (yyvsp[0].table).uni_val_flag == 0)   
+                                                        {
+                                                            (yyval.table).uni_val_flag = 1;
+                                                            (yyval.table).val.float_val = (yyvsp[-2].table).val.float_val + (yyvsp[0].table).val.int_val;
+                                                        }
+                                                        else if((yyvsp[-2].table).uni_val_flag == 1 && (yyvsp[0].table).uni_val_flag == 1)   
+                                                        {
+                                                            (yyval.table).uni_val_flag = 1;
+                                                            (yyval.table).val.float_val = (yyvsp[-2].table).val.float_val + (yyvsp[0].table).val.float_val;
+                                                        } 
+                                                    /*printf("$$ = %d %d %d",$$,$1,$3);*/
+                                                    }
+#line 1653 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 11:
-#line 127 "ruby2.y" /* yacc.c:1646  */
-    {(yyval.intval)=(yyvsp[-2].intval)+(yyvsp[0].intval);}
-#line 1566 "y.tab.c" /* yacc.c:1646  */
+#line 225 "ruby2.y" /* yacc.c:1646  */
+    {
+                                                        if((yyvsp[-2].table).uni_val_flag == 0 && (yyvsp[0].table).uni_val_flag == 0)   
+                                                        {
+                                                            (yyval.table).uni_val_flag = 0;
+                                                            (yyval.table).val.int_val = (yyvsp[-2].table).val.int_val * (yyvsp[0].table).val.int_val;
+                                                        }
+                                                        else if((yyvsp[-2].table).uni_val_flag == 0 && (yyvsp[0].table).uni_val_flag == 1)   
+                                                        {
+                                                            (yyval.table).uni_val_flag = 1;
+                                                            (yyval.table).val.float_val = (yyvsp[-2].table).val.int_val * (yyvsp[0].table).val.float_val;
+                                                        }
+                                                        else if((yyvsp[-2].table).uni_val_flag == 1 && (yyvsp[0].table).uni_val_flag == 0)   
+                                                        {
+                                                            (yyval.table).uni_val_flag = 1;
+                                                            (yyval.table).val.float_val = (yyvsp[-2].table).val.float_val * (yyvsp[0].table).val.int_val;
+                                                        }
+                                                        else if((yyvsp[-2].table).uni_val_flag == 1 && (yyvsp[0].table).uni_val_flag == 1)   
+                                                        {
+                                                            (yyval.table).uni_val_flag = 1;
+                                                            (yyval.table).val.float_val = (yyvsp[-2].table).val.float_val * (yyvsp[0].table).val.float_val;
+                                                        } 
+                                                    }
+#line 1680 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 12:
-#line 128 "ruby2.y" /* yacc.c:1646  */
-    {(yyval.intval)=(yyvsp[-2].intval)-(yyvsp[0].intval);}
-#line 1572 "y.tab.c" /* yacc.c:1646  */
+#line 247 "ruby2.y" /* yacc.c:1646  */
+    {
+                                                        (yyval.table).uni_val_flag = 0; 
+                                                        (yyval.table).val.int_val = (yyvsp[-2].table).val.int_val % (yyvsp[0].table).val.int_val;
+                                                    }
+#line 1689 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 27:
-#line 159 "ruby2.y" /* yacc.c:1646  */
-    {int i = check_symtable((yyvsp[-2].id));
-                                                yylval.tab_arr[i].int_val = (yyvsp[0].intval);
-                                                yylval.tab_arr[i].tok_name = "int";
-                                                }
-#line 1581 "y.tab.c" /* yacc.c:1646  */
+  case 13:
+#line 251 "ruby2.y" /* yacc.c:1646  */
+    {
+                                                        (yyval.table).uni_val_flag = 0;
+                                                        if((yyvsp[-2].table).uni_val_flag == 0 && (yyvsp[0].table).uni_val_flag == 0)   
+                                                            (yyval.table).val.int_val = (yyvsp[-2].table).val.int_val < (yyvsp[0].table).val.int_val ? -1 : (yyvsp[-2].table).val.int_val > (yyvsp[0].table).val.int_val ? 1 : 0;
+                                                        else if((yyvsp[-2].table).uni_val_flag == 0 && (yyvsp[0].table).uni_val_flag == 1)   
+                                                            (yyval.table).val.int_val = (yyvsp[-2].table).val.int_val < (yyvsp[0].table).val.float_val ? -1 : (yyvsp[-2].table).val.int_val > (yyvsp[0].table).val.float_val ? 1 : 0;
+                                                        else if((yyvsp[-2].table).uni_val_flag == 1 && (yyvsp[0].table).uni_val_flag == 0)   
+                                                            (yyval.table).val.int_val = (yyvsp[-2].table).val.float_val < (yyvsp[0].table).val.int_val ? -1 : (yyvsp[-2].table).val.float_val > (yyvsp[0].table).val.int_val ? 1 : 0;
+                                                        else if((yyvsp[-2].table).uni_val_flag == 1 && (yyvsp[0].table).uni_val_flag == 1)   
+                                                            (yyval.table).val.int_val = (yyvsp[-2].table).val.float_val < (yyvsp[0].table).val.float_val ? -1 : (yyvsp[-2].table).val.float_val > (yyvsp[0].table).val.float_val ? 1 : 0;
+                                                    }
+#line 1705 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 28:
-#line 163 "ruby2.y" /* yacc.c:1646  */
-    {int i = check_symtable((yyvsp[-2].id));
-                                                yylval.tab_arr[i].array = "0005x44";
-                                                yylval.tab_arr[i].tok_name = "array";
+  case 15:
+#line 265 "ruby2.y" /* yacc.c:1646  */
+    {
+                                                                (yyval.table).uni_val_flag = 3;
+                                                                if((yyvsp[-2].table).uni_val_flag == 0 && (yyvsp[0].table).uni_val_flag == 0)
+                                                                    (yyval.table).val.bool_val = (yyvsp[-2].table).val.int_val < (yyvsp[0].table).val.int_val ? "true":"false";
+                                                                else if((yyvsp[-2].table).uni_val_flag == 0 && (yyvsp[0].table).uni_val_flag == 1)
+                                                                    (yyval.table).val.bool_val = (yyvsp[-2].table).val.int_val < (yyvsp[0].table).val.float_val ? "true":"false";
+                                                                else if((yyvsp[-2].table).uni_val_flag == 1 && (yyvsp[0].table).uni_val_flag == 0)
+                                                                    (yyval.table).val.bool_val = (yyvsp[-2].table).val.float_val < (yyvsp[0].table).val.int_val ? "true":"false";
+                                                                else if((yyvsp[-2].table).uni_val_flag == 1 && (yyvsp[0].table).uni_val_flag == 1)
+                                                                    (yyval.table).val.bool_val = (yyvsp[-2].table).val.float_val < (yyvsp[0].table).val.float_val ? "true":"false";
+                                                            }
+#line 1721 "y.tab.c" /* yacc.c:1646  */
+    break;
 
-                                                }
-#line 1591 "y.tab.c" /* yacc.c:1646  */
+  case 16:
+#line 276 "ruby2.y" /* yacc.c:1646  */
+    {
+                                                                (yyval.table).uni_val_flag = 3;
+                                                                if((yyvsp[-2].table).uni_val_flag == 0 && (yyvsp[0].table).uni_val_flag == 0)
+                                                                    (yyval.table).val.bool_val = (yyvsp[-2].table).val.int_val > (yyvsp[0].table).val.int_val ? "true":"false";
+                                                                else if((yyvsp[-2].table).uni_val_flag == 0 && (yyvsp[0].table).uni_val_flag == 1)
+                                                                    (yyval.table).val.bool_val = (yyvsp[-2].table).val.int_val > (yyvsp[0].table).val.float_val ? "true":"false";
+                                                                else if((yyvsp[-2].table).uni_val_flag == 1 && (yyvsp[0].table).uni_val_flag == 0)
+                                                                    (yyval.table).val.bool_val = (yyvsp[-2].table).val.float_val > (yyvsp[0].table).val.int_val ? "true":"false";
+                                                                else if((yyvsp[-2].table).uni_val_flag == 1 && (yyvsp[0].table).uni_val_flag == 1)
+                                                                    (yyval.table).val.bool_val = (yyvsp[-2].table).val.float_val > (yyvsp[0].table).val.float_val ? "true":"false";
+                                                            }
+#line 1737 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 17:
+#line 287 "ruby2.y" /* yacc.c:1646  */
+    {
+                                                                (yyval.table).uni_val_flag = 3;
+                                                                if((yyvsp[-2].table).uni_val_flag == 0 && (yyvsp[0].table).uni_val_flag == 0)
+                                                                    (yyval.table).val.bool_val = (yyvsp[-2].table).val.int_val <= (yyvsp[0].table).val.int_val ? "true":"false";
+                                                                else if((yyvsp[-2].table).uni_val_flag == 0 && (yyvsp[0].table).uni_val_flag == 1)
+                                                                    (yyval.table).val.bool_val = (yyvsp[-2].table).val.int_val <= (yyvsp[0].table).val.float_val ? "true":"false";
+                                                                else if((yyvsp[-2].table).uni_val_flag == 1 && (yyvsp[0].table).uni_val_flag == 0)
+                                                                    (yyval.table).val.bool_val = (yyvsp[-2].table).val.float_val <= (yyvsp[0].table).val.int_val ? "true":"false";
+                                                                else if((yyvsp[-2].table).uni_val_flag == 1 && (yyvsp[0].table).uni_val_flag == 1)
+                                                                    (yyval.table).val.bool_val = (yyvsp[-2].table).val.float_val <= (yyvsp[0].table).val.float_val ? "true":"false";
+                                                            }
+#line 1753 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 18:
+#line 298 "ruby2.y" /* yacc.c:1646  */
+    {
+                                                                (yyval.table).uni_val_flag = 3;
+                                                                if((yyvsp[-2].table).uni_val_flag == 0 && (yyvsp[0].table).uni_val_flag == 0)
+                                                                    (yyval.table).val.bool_val = (yyvsp[-2].table).val.int_val >= (yyvsp[0].table).val.int_val ? "true":"false";
+                                                                else if((yyvsp[-2].table).uni_val_flag == 0 && (yyvsp[0].table).uni_val_flag == 1)
+                                                                    (yyval.table).val.bool_val = (yyvsp[-2].table).val.int_val >= (yyvsp[0].table).val.float_val ? "true":"false";
+                                                                else if((yyvsp[-2].table).uni_val_flag == 1 && (yyvsp[0].table).uni_val_flag == 0)
+                                                                    (yyval.table).val.bool_val = (yyvsp[-2].table).val.float_val >= (yyvsp[0].table).val.int_val ? "true":"false";
+                                                                else if((yyvsp[-2].table).uni_val_flag == 1 && (yyvsp[0].table).uni_val_flag == 1)
+                                                                    (yyval.table).val.bool_val = (yyvsp[-2].table).val.float_val >= (yyvsp[0].table).val.float_val ? "true":"false";
+                                                            }
+#line 1769 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 19:
+#line 309 "ruby2.y" /* yacc.c:1646  */
+    {
+                                                                (yyval.table).uni_val_flag = 3;
+                                                                if((yyvsp[-2].table).uni_val_flag == 0 && (yyvsp[0].table).uni_val_flag == 0)
+                                                                    (yyval.table).val.bool_val = (yyvsp[-2].table).val.int_val == (yyvsp[0].table).val.int_val ? "true":"false";
+                                                                else if((yyvsp[-2].table).uni_val_flag == 0 && (yyvsp[0].table).uni_val_flag == 1)
+                                                                    (yyval.table).val.bool_val = (yyvsp[-2].table).val.int_val == (yyvsp[0].table).val.float_val ? "true":"false";
+                                                                else if((yyvsp[-2].table).uni_val_flag == 1 && (yyvsp[0].table).uni_val_flag == 0)
+                                                                    (yyval.table).val.bool_val = (yyvsp[-2].table).val.float_val == (yyvsp[0].table).val.int_val ? "true":"false";
+                                                                else if((yyvsp[-2].table).uni_val_flag == 1 && (yyvsp[0].table).uni_val_flag == 1)
+                                                                    (yyval.table).val.bool_val = (yyvsp[-2].table).val.float_val == (yyvsp[0].table).val.float_val ? "true":"false";
+                                                            }
+#line 1785 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 20:
+#line 320 "ruby2.y" /* yacc.c:1646  */
+    {
+                                                                (yyval.table).uni_val_flag = 3;
+                                                                if((yyvsp[-2].table).uni_val_flag == 0 && (yyvsp[0].table).uni_val_flag == 0)
+                                                                    (yyval.table).val.bool_val = (yyvsp[-2].table).val.int_val != (yyvsp[0].table).val.int_val ? "true":"false";
+                                                                else if((yyvsp[-2].table).uni_val_flag == 0 && (yyvsp[0].table).uni_val_flag == 1)
+                                                                    (yyval.table).val.bool_val = (yyvsp[-2].table).val.int_val != (yyvsp[0].table).val.float_val ? "true":"false";
+                                                                else if((yyvsp[-2].table).uni_val_flag == 1 && (yyvsp[0].table).uni_val_flag == 0)
+                                                                    (yyval.table).val.bool_val = (yyvsp[-2].table).val.float_val != (yyvsp[0].table).val.int_val ? "true":"false";
+                                                                else if((yyvsp[-2].table).uni_val_flag == 1 && (yyvsp[0].table).uni_val_flag == 1)
+                                                                    (yyval.table).val.bool_val = (yyvsp[-2].table).val.float_val != (yyvsp[0].table).val.float_val ? "true":"false";
+                                                            }
+#line 1801 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 21:
+#line 331 "ruby2.y" /* yacc.c:1646  */
+    {
+                                                                if((yyvsp[0].table).uni_val_flag == 0)
+                                                                {
+                                                                    (yyval.table).uni_val_flag = 0;
+                                                                    (yyval.table).val.int_val = (yyvsp[0].table).val.int_val;
+                                                                }
+                                                                else if((yyvsp[0].table).uni_val_flag == 1)
+                                                                {
+                                                                    (yyval.table).uni_val_flag = 1;
+                                                                    (yyval.table).val.float_val = (yyvsp[0].table).val.float_val;
+                                                                }
+                                                            }
+#line 1818 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 29:
-#line 168 "ruby2.y" /* yacc.c:1646  */
-    {int i = check_symtable((yyvsp[-2].id));
-                                                yylval.tab_arr[i].str = (yyvsp[0].str);
+#line 359 "ruby2.y" /* yacc.c:1646  */
+    {
+                                                    int i = check_symtable((yyvsp[-2].id));
+                                                    yylval.tab_arr[i].uni_val_flag = (yyvsp[0].table).uni_val_flag;
+                                                    switch((yyvsp[0].table).uni_val_flag)
+                                                    {
+                                                        case 0:
+                                                            yylval.tab_arr[i].val.int_val = (yyvsp[0].table).val.int_val;
+                                                            yylval.tab_arr[i].tok_name = "int";
+                                                            break;
+                                                        case 1:
+                                                            yylval.tab_arr[i].val.float_val = (yyvsp[0].table).val.float_val;
+                                                            yylval.tab_arr[i].tok_name = "float";
+                                                            break;
+                                                        case 3:
+                                                            yylval.tab_arr[i].val.bool_val = (char*)malloc((strlen((yyvsp[0].table).val.bool_val)+1) * sizeof(char));
+                                                            strcpy(yylval.tab_arr[i].val.bool_val, (yyvsp[0].table).val.bool_val);
+                                                            yylval.tab_arr[i].tok_name = "bool";
+
+                                                    }
+                                            }
+#line 1843 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 30:
+#line 380 "ruby2.y" /* yacc.c:1646  */
+    {
+                                                int i = check_symtable((yyvsp[-2].id));
+                                                yylval.tab_arr[i].uni_val_flag = 4;
+                                                yylval.tab_arr[i].val.array = "0005x44";
+                                                yylval.tab_arr[i].tok_name = "array";
+
+                                            }
+#line 1855 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 31:
+#line 387 "ruby2.y" /* yacc.c:1646  */
+    {
+                                                int i = check_symtable((yyvsp[-2].id));
+                                                yylval.tab_arr[i].uni_val_flag = 2;
+                                                yylval.tab_arr[i].val.str = (yyvsp[0].str);
                                                 yylval.tab_arr[i].tok_name = "string";
+                                            }
+#line 1866 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 38:
+#line 417 "ruby2.y" /* yacc.c:1646  */
+    {
+                                                    switch((yyvsp[0].table).uni_val_flag)
+                                                    {
+                                                        case 0:
+                                                            (yyval.table).uni_val_flag = 0;
+                                                            (yyval.table).val.int_val = (yyvsp[0].table).val.int_val;
+                                                            break;
+                                                        case 1:
+                                                            (yyval.table).uni_val_flag = 1;
+                                                            (yyval.table).val.float_val = (yyvsp[0].table).val.float_val;
+                                                            break;
+                                                        case 3:
+                                                            (yyval.table).uni_val_flag = 3;
+                                                            (yyval.table).val.bool_val = (yyvsp[0].table).val.bool_val;
+                                                            break; 
+                                                    }
                                                 }
-#line 1600 "y.tab.c" /* yacc.c:1646  */
+#line 1888 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 39:
+#line 434 "ruby2.y" /* yacc.c:1646  */
+    {
+                                                            (yyval.table).uni_val_flag = 3;
+                                                            int a = strcmp((yyvsp[-2].table).val.bool_val, "true") ? 0 : 1;
+                                                            int b = strcmp((yyvsp[0].table).val.bool_val, "true") ? 0 : 1;
+                                                            (yyval.table).val.bool_val = a && b ? "true" : "false";
+                                                        }
+#line 1899 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 40:
+#line 440 "ruby2.y" /* yacc.c:1646  */
+    {
+                                                            (yyval.table).uni_val_flag = 3;
+                                                            int a = strcmp((yyvsp[-2].table).val.bool_val, "true") ? 0 : 1;
+                                                            int b = strcmp((yyvsp[0].table).val.bool_val, "true") ? 0 : 1;
+                                                            (yyval.table).val.bool_val = a || b ? "true" : "false";
+                                                        }
+#line 1910 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 41:
+#line 446 "ruby2.y" /* yacc.c:1646  */
+    {
+                                                            (yyval.table).uni_val_flag = 3;
+                                                            int a = strcmp((yyvsp[0].table).val.bool_val, "true") ? 0 : 1;
+                                                            (yyval.table).val.bool_val = !a ? "true" : "false";
+                                                        }
+#line 1920 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 50:
+#line 462 "ruby2.y" /* yacc.c:1646  */
+    {
+                                                         (yyval.table).uni_val_flag = 0;
+                                                         (yyval.table).val.int_val = (yyvsp[0].intval);
+                                                                   
+                                                        /*$$ = make_node($1,NULL,NULL);*/
+                                                    }
+#line 1931 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 51:
+#line 468 "ruby2.y" /* yacc.c:1646  */
+    {
+                                                        if((yyvsp[-1].table).uni_val_flag == 0)
+                                                        {
+                                                            (yyval.table).uni_val_flag = 0;
+                                                            (yyval.table).val.int_val = (yyvsp[-1].table).val.int_val;
+                                                        }
+                                                        else if((yyvsp[-1].table).uni_val_flag == 1)
+                                                        {
+                                                            (yyval.table).uni_val_flag = 1;
+                                                            (yyval.table).val.float_val = (yyvsp[-1].table).val.float_val;
+                                                        }
+                                                    }
+#line 1948 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 52:
+#line 480 "ruby2.y" /* yacc.c:1646  */
+    {
+                                                         (yyval.table).uni_val_flag = 1;
+                                                         (yyval.table).val.float_val = (yyvsp[0].floatval);
+                                                                   
+                                                        /*$$ = make_node($1,NULL,NULL);*/
+                                                    }
+#line 1959 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 53:
+#line 488 "ruby2.y" /* yacc.c:1646  */
+    {
+                                int i = check_symtable((yyvsp[0].id));
+                                if(yylval.tab_arr[i].uni_val_flag == 0)
+                                {
+                                    (yyval.table).uni_val_flag = 0;
+                                    (yyval.table).val.int_val = yylval.tab_arr[i].val.int_val;    //FIX THIS
+                                }
+                                else if(yylval.tab_arr[i].uni_val_flag == 1)
+                                {
+                                    (yyval.table).uni_val_flag = 1;
+                                    (yyval.table).val.float_val = yylval.tab_arr[i].val.float_val;
+                                }
+                             //printf("iterm = %d\n",i);
+                            }
+#line 1978 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 54:
-#line 204 "ruby2.y" /* yacc.c:1646  */
-    {(yyval.intval) = (yyvsp[-1].intval);}
-#line 1606 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 55:
-#line 206 "ruby2.y" /* yacc.c:1646  */
-    {int i = check_symtable((yyvsp[0].id));
-                             (yyval.id) = yylval.tab_arr[i].int_val;
-                            }
-#line 1614 "y.tab.c" /* yacc.c:1646  */
+#line 506 "ruby2.y" /* yacc.c:1646  */
+    {printf("WHILE");}
+#line 1984 "y.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1618 "y.tab.c" /* yacc.c:1646  */
+#line 1988 "y.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1849,7 +2219,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 277 "ruby2.y" /* yacc.c:1906  */
+#line 560 "ruby2.y" /* yacc.c:1906  */
 
 
 void yyerror(char *s) {
@@ -1860,10 +2230,29 @@ void yyerror(char *s) {
 void print_symtable(){
     int i=1;
     printf("\nSYMBOL TABLE\n\n");
-    printf("Type\t\tName\t\tScope\t\tLineNo\t\tIntVal\t\tFloatVal\t\tBoolVal\t\tString\t\tArrPoint\tOccurences\n");
+    printf("Type\t\tName\t\tScope\t\tLineNo\t\tOccurences\t\tValue\n");
     while(yylval.tab_arr[i].tok_name!=NULL)
     {
-        printf("%s\t\t%s\t\t%s\t\t%d\t\t%d\t\t%f\t\t%d\t\t%s\t\t%s\t\t%d\n",yylval.tab_arr[i].tok_name,yylval.tab_arr[i].tok_val,yylval.tab_arr[i].scope,yylval.tab_arr[i].line_no,yylval.tab_arr[i].int_val,yylval.tab_arr[i].float_val,yylval.tab_arr[i].bool_val, yylval.tab_arr[i].str, yylval.tab_arr[i].array, yylval.tab_arr[i].occurences);
+        printf("%s\t\t%s\t\t%s\t\t%d\t\t%d\t\t\t",yylval.tab_arr[i].tok_name,yylval.tab_arr[i].tok_val,yylval.tab_arr[i].scope,yylval.tab_arr[i].line_no,yylval.tab_arr[i].occurences);
+        switch(yylval.tab_arr[i].uni_val_flag)
+        {
+            case 0: 
+                printf("%d\n", yylval.tab_arr[i].val.int_val);
+                break;
+            case 1: 
+                printf("%f\n", yylval.tab_arr[i].val.float_val);
+                break;
+            case 2: 
+                printf("%s\n", yylval.tab_arr[i].val.str);
+                break;  
+            case 3: 
+                printf("%s\n", yylval.tab_arr[i].val.bool_val);
+                break;
+            case 4: 
+                printf("%s\n", yylval.tab_arr[i].val.array);
+                break;
+
+        }
         i++;
     }
 }
@@ -1877,12 +2266,8 @@ int check_symtable(char *text)
     {
 		//printf("text:%s  arr:%s\n",text,yylval.tab_arr[i].tok_val);
         if(strcmp(text,yylval.tab_arr[i].tok_val)==0)
-        {
             return i;
-        } 
-        else{
-            i++;
-        }  
+        i++; 
     }
     return -1;
 }
@@ -1906,21 +2291,49 @@ void putvar_symtable(int ind, char *scope, int line_no, char *tok_val)
     printf("Added %s to ST\n",tok_val);
 }
 
+/*struct node *init_tree()
+{
+    struct node *root = malloc(sizeof(struct node));
+    root->token_value = NULL;
+    root->left = NULL;
+    root->right = NULL;
+    return root;    
+
+}
+
+struct node *make_node(char *tk_value, struct node *left_value, struct node *right_value)
+{
+    struct node *node = malloc(sizeof(struct node));
+    node->token_value = tk_value;
+    node->left = left_value;
+    node->right = right_value;
+    return node;
+}
+
+void print_node(struct node *root)
+{
+    if(root == NULL)
+      return;
+    print_node(root->left);                 // inorder traversal
+    printf("%s\n",root->token_value);
+    print_node(root->right);
+}*/
+
 int main()
 {
     extern FILE *yyin, *yyout; 
   
     /* yyin points to the file input.txt 
     and opens  it in read mode*/
-    yyin = fopen("while_input.txt", "r"); 
+    yyin = fopen("test.txt", "r"); 
 
     /* yyout points to the file output.txt 
     and opens it in write mode*/
     yyout = fopen("Output.txt", "w"); 
         /*DEBUG CODE*/
-        //  #if YYDEBUG
-        //      yydebug = 1;
-        //  #endif
+         #if YYDEBUG
+             yydebug = 1;
+         #endif
     yyparse();
     
     print_symtable();

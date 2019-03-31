@@ -40,7 +40,6 @@ BOOL 		"true"|"false"
 IN_RANGE	\({INT}\.\.{INT}\)	
 EX_RANGE	\({INT}\.\.\.{INT}\)
 
-ARITH_OP 	"\+"|"\-"|"\*"|"\/"|"%"
 AR_EXP 		"**"
 
 BOOL_OP 	"&&"|"||"|"and"|"or"|"not"
@@ -63,11 +62,12 @@ P_AS_OP 		({VAR}\,)*{VAR}=
 %%
 
 \n 			{}
+
 	/*comments*/
 "\=begin"(.*\n)*"\=end" 		{comments++;}
 "\#"([a-z]|[A-Z]|[0-9]|" ")*	{comments++;}
-	/*keywords*/
 
+	/*keywords*/
 "puts" 		{return T_puts;}
 "do" 		{return T_do;}
 "end" 		{return T_end;}
@@ -79,9 +79,18 @@ P_AS_OP 		({VAR}\,)*{VAR}=
 "return"	{return T_return;}
 "def"		{return T_def;}
 "class"		{return T_class;}
-	/*operators*/
-	/*{ARRAY}			{printf("Array: %s", yytext); yylval.array = strdup(yytext); return T_array;}*/
+"and"		{return T_and;}
+"or"		{return T_or;}
+"not"		{return T_not;}
 
+	/*operators*/
+"\+"			{return T_plus;}
+"\-"			{return T_minus;}
+"\*"			{return T_mul;}
+"\/"			{return T_div;}
+"%"				{return T_mod;}
+"\>"			{return T_gt;}				
+"\<"			{return T_lt;}
 "("				{return T_openpar;}
 ")"				{return T_closepar;}
 "{"				{return T_opencurly;}
@@ -91,27 +100,24 @@ P_AS_OP 		({VAR}\,)*{VAR}=
 "="				{return T_asop;}
 "**"			{return T_exp;}
 "=="			{return T_comp;}
-">="			{return T_gte;}
-"<="			{return T_lte;}
+"\>="			{return T_gte;}
+"\<="			{return T_lte;}
 "!="			{return T_ne;}
-"<=>"			{return T_ccomp;}
-"==="			{return T_scomp;}
+"\<=\>"			{return T_ccomp;}
 "**="			{return T_expas;}
 "+="			{return T_addas;}
 "-="			{return T_subas;}
 "*="			{return T_mulas;}
 "/="			{return T_divas;}
 "%="			{return T_modas;}
-"&&" | "and"	{return T_and;}
-"||" | "or"		{return T_or;}
-"!"  | "not"		{return T_not;}
+"&&" 			{return T_and;}
+"||" 			{return T_or;}
+"!"  			{return T_not;}
 ","				{char x[1] = ",";return T_comma;}
-"true"			{yylval.boo = 1; return T_true;}
-"false"			{yylval.boo = 0; return T_false;}
+"true"			{yylval.boolval = "true"; return T_true;}
+"false"			{yylval.boolval = "false"; return T_false;}
 
 {SPACES}		{}	
-{ARITH_OP} 		{yylval.arithop = atoi(yytext);printf("arith_op: %d\n",yylval.arithop);return T_ARITH_OP;}
-{REL_OP_SING}	{yylval.relop = atoi(yytext);return T_REL_OP_SING;}
 
 {VAR}			{	cmp_fl = check_symtable(yytext);
 					if(cmp_fl<0)
@@ -125,6 +131,7 @@ P_AS_OP 		({VAR}\,)*{VAR}=
 					{
 						printf("%s Already in Symbol Table\n",yytext);
 						yylval.tab_arr[cmp_fl].occurences++;
+						yylval.id = strdup(yytext);
 						return T_id;
 					}
 				}
@@ -141,6 +148,7 @@ P_AS_OP 		({VAR}\,)*{VAR}=
 					{
 						printf("%s Already in Symbol Table\n",yytext);
 						yylval.tab_arr[cmp_fl].occurences++;
+						yylval.id = strdup(yytext);
 						return T_id;
 					}
 				}
@@ -157,6 +165,7 @@ P_AS_OP 		({VAR}\,)*{VAR}=
 					{
 						printf("%s Already in Symbol Table\n",yytext);
 						yylval.tab_arr[cmp_fl].occurences++;
+						yylval.id = strdup(yytext);
 						return T_id;
 					}
 				}
@@ -173,6 +182,7 @@ P_AS_OP 		({VAR}\,)*{VAR}=
 					{
 						printf("%s Already in Symbol Table\n",yytext);
 						yylval.tab_arr[cmp_fl].occurences++;
+						yylval.id = strdup(yytext);
 						return T_id;
 					}
 				}
